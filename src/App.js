@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
-import Login from "./components/login";
+import Login from "./components/login/login";
 import "./App.css";
 
 function App() {
