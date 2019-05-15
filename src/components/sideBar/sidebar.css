@@ -9,14 +9,13 @@
 .sidebar_menu {
   position: fixed;
   float: left;
-  width: 10%;
+  width: 12%;
   overflow: hidden;
   height: 100%;
   background-color: #3c3c3b;
-  padding: 5px;
+  text-align: left;
 }
 
-/*estilos dos links do menu lateral*/
 .navigation_section > a {
   text-decoration: none;
   color: white;
@@ -41,4 +40,84 @@
 .navigation_section a:visited {
   text-decoration: none;
   color: white;
+}
+
+.boxed_item {
+  font-family: "Open Sans";
+  font-weight: 200;
+  padding: 10px 20px;
+  display: inline-block;
+  border: solid 2px white;
+  box-sizing: border-box;
+  font-size: 22px;
+  color: white;
+  text-align: center;
+  margin-top: 30px;
+  min-width: 200px;
+}
+
+.logo_bold {
+  font-weight: 800;
+}
+
+.logo_title {
+  color: white;
+  font-family: "Open Sans";
+  font-weight: 200;
+  font-size: 16px;
+  text-align: center;
+  padding: 0px 0;
+}
+
+.navigation_section {
+  margin: 20px 0;
+  display: block;
+  width: 200px;
+  margin-left: 25px;
+}
+
+.navigation_item {
+  font-weight: 400;
+  font-family: "Open Sans";
+  color: white;
+  padding: 12px 0px;
+  box-sizing: border-box;
+  font-size: 14px;
+  color: #d8d8d8;
+  border-bottom: solid 1px #d8d8d8;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.sem-border {
+  border-bottom: none;
+}
+
+.boxed_item_smaller {
+  font-size: 12px;
+  color: #d8d8d8;
+  width: 200px;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  border-width: 1px;
+  margin: 0 0 20px 0;
+}
+
+.boxed_item_smaller:hover {
+  background-color: white;
+  color: #111;
+  transition: all 0.3s ease-in-out;
+}
+
+.sub-menu {
+  margin-left: 20px;
+  font-weight: 200;
+}
+
+.nao-mostra {
+  display: none;
+}
+
+.noMargin {
+  margin: 0;
 }

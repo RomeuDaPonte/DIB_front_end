@@ -5,7 +5,7 @@ import "./sidebar.css";
 const SidBar = () => {
   return (
     <div className="sidebar_menu">
-      <center className="noMargin">
+      <center>
         <a href="#" />
         <h1 className="boxed_item">
           Felix <span className="logo_hold">Francisco</span>
@@ -23,7 +23,7 @@ const SidBar = () => {
           <a href>Cliente/Fornecedor</a>
         </li>
         <li className="navigation_item sem-border">
-          <a href>Orçamento</a>
+          <a href>Definições</a>
           <ul>
             <li className="navigation_item">
               <a className="sub-menu" />
@@ -39,9 +39,9 @@ const SidBar = () => {
         </li>
       </ul>
       <center>
-        <a className="boxed_item boxed_item_smaller signup">
+        <a className="boxed_item boxed_item_smaller">
           <i className="fa fa-grav" style={{ color: "white" }} />
-          <span>Log out</span>
+          <span style={{ color: "white" }}>Log out</span>
         </a>
       </center>
     </div>
