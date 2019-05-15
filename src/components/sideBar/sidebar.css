@@ -1,0 +1,44 @@
+/*estilos do menu lateral*/
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-decoration: none;
+}
+
+.sidebar_menu {
+  position: fixed;
+  float: left;
+  width: 10%;
+  overflow: hidden;
+  height: 100%;
+  background-color: #3c3c3b;
+  padding: 5px;
+}
+
+/*estilos dos links do menu lateral*/
+.navigation_section > a {
+  text-decoration: none;
+  color: white;
+}
+
+.navigation_section a:link {
+  text-decoration: none;
+  color: white;
+}
+
+.navigation_section a:hover {
+  text-decoration: none;
+  color: white;
+  font-weight: 400;
+}
+
+.navigation_section a:active {
+  text-decoration: none;
+  color: white;
+}
+
+.navigation_section a:visited {
+  text-decoration: none;
+  color: white;
+}

@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Login from "./components/login/login";
+import Landing from "./components/landing";
 import "./App.css";
 
 function App() {
@@ -8,7 +9,7 @@ function App() {
     <div className="App">
       <Switch>
         <Route path="/login" component={Login} />
-        <Route path="/" exact component={Login} />
+        <Route path="/" exact component={Landing} />
         <Redirect to="/not-found" />
       </Switch>
     </div>
