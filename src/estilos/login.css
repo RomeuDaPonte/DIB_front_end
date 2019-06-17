@@ -1,0 +1,25 @@
+.logInForm {
+  background-color: black;
+  height: 100%;
+  padding: 1em;
+}
+
+.hStyle {
+  color: white;
+}
+
+.btn {
+  width: 50%;
+  float: left;
+}
+
+.lbl {
+  font-size: 1.5em;
+  color: white;
+  font-weight: bold;
+}
+
+input[type="checkbox"] {
+  margin-left: 1px;
+  margin-top: 0.9em;
+}
