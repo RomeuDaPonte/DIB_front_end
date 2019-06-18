@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
 import logo from "../../imagens/LogInImg.jpg";
+import account from "../../services/account";
 import "../../estilos/login.css";
 
 class Login extends Component {
@@ -67,7 +68,7 @@ class Login extends Component {
     this.setState({ guardar });
   };
 
-  submit = e => {
+  submit = async e => {
     e.preventDefault();
 
     const errors = this.validate();
@@ -79,6 +80,16 @@ class Login extends Component {
     if (this.state.guardar) {
       localStorage.setItem("email", this.state.data.email);
       localStorage.setItem("password", this.state.data.password);
+    }
+
+    try {
+      const { data } = this.state;
+      await account.login(data.email, data.password);
+      window.location = "/";
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        this.setState({ formError: ex.response.data });
+      }
     }
   };
 
@@ -130,6 +141,13 @@ class Login extends Component {
                   <div className="alert alert-danger">{errors["password"]}</div>
                 )}
               </div>
+              <div className="form-group">
+                {this.state.formError && (
+                  <div className="alert alert-danger">
+                    {this.state.formError}
+                  </div>
+                )}
+              </div>
               <div className="form-check p-0">
                 <input
                   type="checkbox"
@@ -140,6 +158,7 @@ class Login extends Component {
                 <label htmlFor="guardar" className="form-check-label ml-4 lbl">
                   Guardar
                 </label>
+
                 <button type="submit" className="btn btn-dark">
                   Log in
                 </button>

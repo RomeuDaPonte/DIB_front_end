@@ -1,47 +1,57 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
+import moment from "moment";
+import Logotipo from "../../imagens/MenuLogo.jpg";
 import "./sidebar.css";
 
-const SidBar = () => {
+const SidBar = ({ user }) => {
   return (
     <div className="sidebar_menu">
+      <img className="logitipoMenu" src={Logotipo} alt="#" />
       <center>
-        <a href="#" />
         <h1 className="boxed_item">
-          Felix <span className="logo_hold">Francisco</span>
+          <span className="logo_bold">{user && user.name}</span>{" "}
         </h1>
-        <h1 className="logo_title">data de hoje</h1>
+        <h1 className="logo_title mt-2">
+          {moment().format("dddd, MMMM Do YYYY")}
+        </h1>
       </center>
       <ul className="navigation_section">
         <li className="navigation_item">
-          <a href>Orçamento</a>
+          <NavLink to="">Orçamento</NavLink>
         </li>
         <li className="navigation_item">
-          <a href>Obra</a>
+          <NavLink to="">Obra</NavLink>
         </li>
         <li className="navigation_item">
-          <a href>Cliente/Fornecedor</a>
+          <NavLink to="">Cliente/Fornecedor</NavLink>
         </li>
         <li className="navigation_item sem-border">
-          <a href>Definições</a>
+          <NavLink to="">Definições</NavLink>
           <ul>
             <li className="navigation_item">
-              <a className="sub-menu" />
-              Novo utilizador
+              <NavLink className="sub-menu" to="">
+                Novo utilizador
+              </NavLink>
             </li>
             <li className="navigation_item">
-              <a className="sub-menu">Lista de utilizadores</a>
+              <NavLink className="sub-menu" to="">
+                Lista de utilizadores
+              </NavLink>
             </li>
             <li className="navigation_item">
-              <a className="sub-menu">Definir preços</a>
+              <NavLink className="sub-menu" to="">
+                Definir preços
+              </NavLink>
             </li>
           </ul>
         </li>
       </ul>
       <center>
-        <a className="boxed_item boxed_item_smaller">
-          <i className="fa fa-grav" style={{ color: "white" }} />
+        <NavLink className="boxed_item boxed_item_smaller" to="">
+          <i className="fa fa-grav mr-2" style={{ color: "white" }} />
           <span style={{ color: "white" }}>Log out</span>
-        </a>
+        </NavLink>
       </center>
     </div>
   );
