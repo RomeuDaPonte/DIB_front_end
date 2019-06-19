@@ -1,8 +1,16 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import moment from "moment";
-import Logotipo from "../../imagens/MenuLogo.jpg";
-import "./sidebar.css";
+import Logotipo from "../imagens/MenuLogo.jpg";
+import "../estilos/sidebar.css";
+
+const toogleSubMenu = () => {
+  const subMenu = document.getElementById("subMenuAdmin");
+
+  if (subMenu.classList.value === "nao-mostra")
+    subMenu.classList.remove("nao-mostra");
+  else subMenu.classList.add("nao-mostra");
+};
 
 const SidBar = ({ user }) => {
   return (
@@ -27,8 +35,10 @@ const SidBar = ({ user }) => {
           <NavLink to="">Cliente/Fornecedor</NavLink>
         </li>
         <li className="navigation_item sem-border">
-          <NavLink to="">Definições</NavLink>
-          <ul>
+          <NavLink onClick={toogleSubMenu} to="">
+            Definições
+          </NavLink>
+          <ul id="subMenuAdmin" className="nao-mostra">
             <li className="navigation_item">
               <NavLink className="sub-menu" to="">
                 Novo utilizador
@@ -49,8 +59,7 @@ const SidBar = ({ user }) => {
       </ul>
       <center>
         <NavLink className="boxed_item boxed_item_smaller" to="">
-          <i className="fa fa-grav mr-2" style={{ color: "white" }} />
-          <span style={{ color: "white" }}>Log out</span>
+          <i className="fa fa-power-off fa-2x" style={{ color: "white" }} />
         </NavLink>
       </center>
     </div>

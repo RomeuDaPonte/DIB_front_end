@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Sidbar from "./sideBar/sidbar";
+import Sidbar from "./sidbar";
 import accountService from "../services/account";
 
 class Landing extends Component {
