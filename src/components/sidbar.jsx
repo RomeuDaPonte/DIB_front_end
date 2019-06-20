@@ -1,69 +1,81 @@
-import React from "react";
+import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import moment from "moment";
 import Logotipo from "../imagens/MenuLogo.jpg";
 import "../estilos/sidebar.css";
 
-const toogleSubMenu = () => {
-  const subMenu = document.getElementById("subMenuAdmin");
+class SideBar extends Component {
+  state = {
+    naoMostra: "nao-mostra"
+  };
 
-  if (subMenu.classList.value === "nao-mostra")
-    subMenu.classList.remove("nao-mostra");
-  else subMenu.classList.add("nao-mostra");
-};
+  toogleClass = e => {
+    let hasClass = this.state.naoMostra;
 
-const SidBar = ({ user }) => {
-  return (
-    <div className="sidebar_menu">
-      <img className="logitipoMenu" src={Logotipo} alt="#" />
-      <center>
-        <h1 className="boxed_item">
-          <span className="logo_bold">{user && user.name}</span>{" "}
-        </h1>
-        <h1 className="logo_title mt-2">
-          {moment().format("dddd, MMMM Do YYYY")}
-        </h1>
-      </center>
-      <ul className="navigation_section">
-        <li className="navigation_item">
-          <NavLink to="">Orçamento</NavLink>
-        </li>
-        <li className="navigation_item">
-          <NavLink to="">Obra</NavLink>
-        </li>
-        <li className="navigation_item">
-          <NavLink to="">Cliente/Fornecedor</NavLink>
-        </li>
-        <li className="navigation_item sem-border">
-          <NavLink onClick={toogleSubMenu} to="">
-            Definições
+    if (hasClass) {
+      hasClass = "";
+      this.setState({ naoMostra: hasClass });
+    } else {
+      hasClass = "nao-mostra";
+      this.setState({ naoMostra: hasClass });
+    }
+  };
+
+  render() {
+    const user = this.props.user;
+
+    return (
+      <div className="sidebar_menu">
+        <img className="logitipoMenu" src={Logotipo} alt="#" />
+        <center>
+          <h1 className="boxed_item">
+            <span className="logo_bold">{user && user.name}</span>
+          </h1>
+          <h1 className="logo_title mt-2">
+            {moment().format("dddd, MMMM Do YYYY")}
+          </h1>
+        </center>
+        <ul className="navigation_section">
+          <li className="navigation_item">
+            <NavLink to="">Orçamento</NavLink>
+          </li>
+          <li className="navigation_item">
+            <NavLink to="">Obra</NavLink>
+          </li>
+          <li className="navigation_item">
+            <NavLink to="">Cliente/Fornecedor</NavLink>
+          </li>
+          <li className="navigation_item sem-border">
+            <NavLink onClick={this.toogleClass} to="">
+              Definições
+            </NavLink>
+            <ul className={this.state.naoMostra} id="subMenuAdmin">
+              <li className="navigation_item">
+                <NavLink className="sub-menu" to="">
+                  Novo utilizador
+                </NavLink>
+              </li>
+              <li className="navigation_item">
+                <NavLink className="sub-menu" to="">
+                  Lista de utilizadores
+                </NavLink>
+              </li>
+              <li className="navigation_item">
+                <NavLink className="sub-menu" to="">
+                  Definir preços
+                </NavLink>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <center>
+          <NavLink className="boxed_item boxed_item_smaller" to="">
+            <i className="fa fa-power-off fa-2x" style={{ color: "white" }} />
           </NavLink>
-          <ul id="subMenuAdmin" className="nao-mostra">
-            <li className="navigation_item">
-              <NavLink className="sub-menu" to="">
-                Novo utilizador
-              </NavLink>
-            </li>
-            <li className="navigation_item">
-              <NavLink className="sub-menu" to="">
-                Lista de utilizadores
-              </NavLink>
-            </li>
-            <li className="navigation_item">
-              <NavLink className="sub-menu" to="">
-                Definir preços
-              </NavLink>
-            </li>
-          </ul>
-        </li>
-      </ul>
-      <center>
-        <NavLink className="boxed_item boxed_item_smaller" to="">
-          <i className="fa fa-power-off fa-2x" style={{ color: "white" }} />
-        </NavLink>
-      </center>
-    </div>
-  );
-};
+        </center>
+      </div>
+    );
+  }
+}
 
-export default SidBar;
+export default SideBar;
