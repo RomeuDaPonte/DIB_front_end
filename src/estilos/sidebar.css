@@ -15,9 +15,9 @@
 .sidebar_menu {
   position: fixed;
   float: left;
-  width: 12%;
   overflow: hidden;
   height: 100%;
+  width: 10%;
   background-color: #3c3c3b;
   text-align: left;
 }
@@ -55,11 +55,11 @@
   display: inline-block;
   border: solid 2px white;
   box-sizing: border-box;
-  font-size: 22px;
+  font-size: 25px;
   color: white;
   text-align: center;
   margin-top: 30px;
-  min-width: 200px;
+  min-width: 80%;
 }
 
 .logo_bold {
@@ -68,18 +68,16 @@
 
 .logo_title {
   color: white;
-  font-family: "Open Sans";
   font-weight: 200;
-  font-size: 16px;
+  font-size: 18px;
   text-align: center;
   padding: 0px 0;
 }
 
 .navigation_section {
-  margin: 20px 0;
+  margin: 8% 0 0 10%;
   display: block;
-  width: 200px;
-  margin-left: 25px;
+  width: 80%;
 }
 
 .navigation_item {
@@ -88,7 +86,6 @@
   color: white;
   padding: 12px 0px;
   box-sizing: border-box;
-  font-size: 14px;
   color: #d8d8d8;
   border-bottom: solid 1px #d8d8d8;
   transition: all 0.3s ease-in-out;

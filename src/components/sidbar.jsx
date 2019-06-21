@@ -60,7 +60,7 @@ class SideBar extends Component {
                   Lista de utilizadores
                 </NavLink>
               </li>
-              <li className="navigation_item">
+              <li className="navigation_item sem-border">
                 <NavLink className="sub-menu" to="">
                   Definir preços
                 </NavLink>
@@ -69,7 +69,7 @@ class SideBar extends Component {
           </li>
         </ul>
         <center>
-          <NavLink className="boxed_item boxed_item_smaller" to="">
+          <NavLink className="boxed_item boxed_item_smaller mt-3" to="">
             <i className="fa fa-power-off fa-2x" style={{ color: "white" }} />
           </NavLink>
         </center>

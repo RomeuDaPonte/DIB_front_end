@@ -1,6 +1,8 @@
 import React, { Component } from "react";
+import { Route, Switch } from "react-router-dom";
 import Sidbar from "./sidbar";
 import accountService from "../services/account";
+import NovoUser from "./account/novoUser";
 
 class Landing extends Component {
   state = {
@@ -14,9 +16,12 @@ class Landing extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <div className="container-fluid p-0">
         <Sidbar user={this.state.user} />
-      </React.Fragment>
+        <Switch>
+          <Route path="/novouser" component={NovoUser} />
+        </Switch>
+      </div>
     );
   }
 }
