@@ -32,13 +32,34 @@
   }
 }
 
+.loginImg {
+  width: 100%;
+}
+
 input[type="checkbox"] {
   transform: scale(2);
+}
+
+.contentorPrincipal {
+  width: 90%;
+  float: right;
 }
 
 .headerStyles {
   background-color: #57575f;
   height: 125px;
-  width: 100%;
+  width: 100%; /* dos 90% definidos no contentor principal */
   color: white;
+  float: right;
+  margin-bottom: 1%;
+}
+
+.btn-login {
+  background-color: black;
+  color: #9f9e9e;
+  border: 1px solid #9f9e9e;
+}
+
+.bg-dark {
+  background-color: #57575f !important;
 }

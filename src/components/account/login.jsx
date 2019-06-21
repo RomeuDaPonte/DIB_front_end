@@ -100,7 +100,7 @@ class Login extends Component {
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-10 p-0">
-            <img src={logo} alt="#" />
+            <img className="loginImg" src={logo} alt="#" />
           </div>
           <div className="col-md-2 p-0">
             <form onSubmit={this.submit} className="logInForm">
@@ -159,7 +159,7 @@ class Login extends Component {
                   Guardar
                 </label>
 
-                <button type="submit" className="btn btn-dark">
+                <button type="submit" className="btn btn-login">
                   Log in
                 </button>
               </div>

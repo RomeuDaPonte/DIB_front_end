@@ -46,12 +46,12 @@ class SideBar extends Component {
             <NavLink to="">Cliente/Fornecedor</NavLink>
           </li>
           <li className="navigation_item sem-border">
-            <NavLink onClick={this.toogleClass} to="">
-              Definições
-            </NavLink>
+            <button className="btn-defenicoes" onClick={this.toogleClass}>
+              Definicoes
+            </button>
             <ul className={this.state.naoMostra} id="subMenuAdmin">
               <li className="navigation_item">
-                <NavLink className="sub-menu" to="">
+                <NavLink className="sub-menu" to="/register">
                   Novo utilizador
                 </NavLink>
               </li>

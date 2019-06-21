@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import Sidbar from "./sidbar";
 import accountService from "../services/account";
-import NovoUser from "./account/novoUser";
+import Register from "./account/novoUser";
 
 class Landing extends Component {
   state = {
@@ -18,9 +18,11 @@ class Landing extends Component {
     return (
       <div className="container-fluid p-0">
         <Sidbar user={this.state.user} />
-        <Switch>
-          <Route path="/novouser" component={NovoUser} />
-        </Switch>
+        <div className="contentorPrincipal">
+          <Switch>
+            <Route path="/register" component={Register} />
+          </Switch>
+        </div>
       </div>
     );
   }

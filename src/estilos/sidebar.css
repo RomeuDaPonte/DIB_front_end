@@ -6,6 +6,16 @@
   text-decoration: none;
 }
 
+.btn-defenicoes {
+  background-color: #3c3c3b;
+  color: white;
+  border: none;
+}
+
+.btn-defenicoes:focus {
+  outline: none;
+}
+
 .logitipoMenu {
   width: 65%;
   margin-left: 18%;
