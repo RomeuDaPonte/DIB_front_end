@@ -54,6 +54,12 @@ input[type="checkbox"] {
   margin-bottom: 1%;
 }
 
+.headerIcon:hover {
+  background-color: white;
+  color: #57575f;
+  cursor: pointer;
+}
+
 .btn-login {
   background-color: black;
   color: #9f9e9e;

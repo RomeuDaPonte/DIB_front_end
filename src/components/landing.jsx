@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import Sidbar from "./sidbar";
 import accountService from "../services/account";
-import Register from "./account/novoUser";
+import UsersList from "./account/usersList";
 
 class Landing extends Component {
   state = {
@@ -20,7 +20,7 @@ class Landing extends Component {
         <Sidbar user={this.state.user} />
         <div className="contentorPrincipal">
           <Switch>
-            <Route path="/register" component={Register} />
+            <Route path="/users" component={UsersList} />
           </Switch>
         </div>
       </div>

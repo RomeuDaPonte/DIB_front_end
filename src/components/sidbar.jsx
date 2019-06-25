@@ -56,7 +56,7 @@ class SideBar extends Component {
                 </NavLink>
               </li>
               <li className="navigation_item">
-                <NavLink className="sub-menu" to="">
+                <NavLink className="sub-menu" to="/users">
                   Lista de utilizadores
                 </NavLink>
               </li>
