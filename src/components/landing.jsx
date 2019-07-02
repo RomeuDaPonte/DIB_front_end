@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import Sidbar from "./sidbar";
 import accountService from "../services/account";
-import UsersList from "./account/usersList";
+import Definicoes from "./definicoes/definicoes";
 
 class Landing extends Component {
   state = {
@@ -20,7 +20,7 @@ class Landing extends Component {
         <Sidbar user={this.state.user} />
         <div className="contentorPrincipal">
           <Switch>
-            <Route path="/users" component={UsersList} />
+            <Route path="/definicoes" component={Definicoes} />
           </Switch>
         </div>
       </div>

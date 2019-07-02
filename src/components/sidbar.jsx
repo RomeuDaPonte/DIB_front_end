@@ -5,22 +5,6 @@ import Logotipo from "../imagens/MenuLogo.jpg";
 import "../estilos/sidebar.css";
 
 class SideBar extends Component {
-  state = {
-    naoMostra: "nao-mostra"
-  };
-
-  toogleClass = e => {
-    let hasClass = this.state.naoMostra;
-
-    if (hasClass) {
-      hasClass = "";
-      this.setState({ naoMostra: hasClass });
-    } else {
-      hasClass = "nao-mostra";
-      this.setState({ naoMostra: hasClass });
-    }
-  };
-
   render() {
     const user = this.props.user;
 
@@ -46,26 +30,7 @@ class SideBar extends Component {
             <NavLink to="">Cliente/Fornecedor</NavLink>
           </li>
           <li className="navigation_item sem-border">
-            <button className="btn-defenicoes" onClick={this.toogleClass}>
-              Definicoes
-            </button>
-            <ul className={this.state.naoMostra} id="subMenuAdmin">
-              <li className="navigation_item">
-                <NavLink className="sub-menu" to="/register">
-                  Novo utilizador
-                </NavLink>
-              </li>
-              <li className="navigation_item">
-                <NavLink className="sub-menu" to="/users">
-                  Lista de utilizadores
-                </NavLink>
-              </li>
-              <li className="navigation_item sem-border">
-                <NavLink className="sub-menu" to="">
-                  Definir preços
-                </NavLink>
-              </li>
-            </ul>
+            <NavLink to="definicoes">Definições</NavLink>
           </li>
         </ul>
         <center>

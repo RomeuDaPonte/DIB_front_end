@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import RegisterModal from "./registerModal";
+import RegisterModal from "../account/registerModal";
 
-class UsersList extends Component {
+class Definicoes extends Component {
   state = {};
   render() {
     return (
@@ -20,4 +20,4 @@ class UsersList extends Component {
   }
 }
 
-export default UsersList;
+export default Definicoes;

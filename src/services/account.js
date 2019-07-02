@@ -13,9 +13,11 @@ export function getJwt() {
 
 export async function newUser(user) {
   return await http.post(apiEndPont + "/new", {
-    name: user.email,
+    name: user.username,
+    email: user.email,
     password: user.password,
-    role: user.role
+    passwordConfirmation: user.passwordConfirmation,
+    role: user.funcao
   });
 }
 
@@ -40,10 +42,15 @@ export function getCurrentUser() {
   }
 }
 
+export async function getRoles() {
+  return await http.get(apiEndPont + "/roles");
+}
+
 export default {
   login,
   logout,
   getCurrentUser,
   getJwt,
-  newUser
+  newUser,
+  getRoles
 };

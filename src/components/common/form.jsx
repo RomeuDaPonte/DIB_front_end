@@ -11,7 +11,8 @@ class Form extends Component {
   };
 
   validate = () => {
-    const options = { abortEarly: false };
+    const options = { abortEarly: true };
+
     const { error } = Joi.validate(this.state.data, this.schema, options);
 
     if (!error) return null;
@@ -25,6 +26,9 @@ class Form extends Component {
   validateProperty = ({ name: propertyName, value }) => {
     const obj = { [propertyName]: value };
     const schema = { [propertyName]: this.schema[propertyName] };
+
+    if (propertyName === "passwordConfirmation") return null;
+
     const { error } = Joi.validate(obj, schema);
 
     return error ? error.details[0].message : null;
@@ -33,6 +37,7 @@ class Form extends Component {
   handleChange = ({ currentTarget: input }) => {
     const errors = { ...this.state.errors };
     const errorMessage = this.validateProperty(input);
+
     if (errorMessage) errors[input.name] = errorMessage;
     else delete errors[input.name];
 
@@ -65,6 +70,14 @@ class Form extends Component {
         placeholder={placeholder}
         error={errors[name]}
       />
+    );
+  }
+
+  renderButton(label) {
+    return (
+      <button disabled={this.validate()} className="btn btn-primary">
+        {label}
+      </button>
     );
   }
 

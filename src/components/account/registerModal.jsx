@@ -1,12 +1,48 @@
-import React, { Component } from "react";
+import React from "react";
 import Modal from "react-bootstrap/Modal";
+import Joi from "joi-browser";
+import * as account from "../../services/account";
 import Button from "react-bootstrap/Button";
-import RegisterFrom from "./registerForm";
+import Form from "../common/form";
 
-class RegisterModal extends Component {
+class RegisterModal extends Form {
   state = {
+    data: {
+      username: "",
+      funcao: "",
+      email: "",
+      password: "",
+      passwordConfirmation: ""
+    },
+    funcoes: [],
+    errors: [],
+    formError: "",
     show: false
   };
+
+  schema = {
+    username: Joi.string()
+      .required()
+      .label("Username"),
+    funcao: Joi.string()
+      .valid("Administrador", "Geral", "Sócio")
+      .required()
+      .label("função"),
+    email: Joi.string()
+      .email()
+      .required()
+      .label("email"),
+    password: Joi.string()
+      .min(5)
+      .required(),
+    passwordConfirmation: Joi.ref("password")
+  };
+
+  async componentDidMount() {
+    const { data } = await account.getRoles();
+
+    this.setState({ funcoes: data });
+  }
 
   handleClose = () => {
     const show = false;
@@ -18,7 +54,21 @@ class RegisterModal extends Component {
     this.setState({ show });
   };
 
+  async doSubmit() {
+    try {
+      const { data } = this.state;
+      await account.newUser(data);
+      this.handleClose();
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        this.setState({ formError: ex.response.data });
+      }
+    }
+  }
+
   render() {
+    const { data, funcoes, errors } = this.state;
+
     return (
       <React.Fragment>
         <i className="fa fa-user-plus fa-5x" onClick={this.handleShow} />
@@ -28,13 +78,41 @@ class RegisterModal extends Component {
             <Modal.Title>Novo utilizador</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <RegisterFrom />
+            <form onSubmit={this.handleSubmit}>
+              {this.renderInput("username", "Nome do utilizador")}
+              <div className="form-group">
+                <select
+                  name={"funcao"}
+                  value={data.funcao}
+                  onChange={this.handleChange}
+                  className="form-control"
+                >
+                  <option value="">Escolha um função </option>
+                  {funcoes.map(funcao => (
+                    <option key={funcao} value={funcao}>
+                      {funcao}
+                    </option>
+                  ))}
+                </select>
+                {errors.funcao && (
+                  <div className="alert alert-danger">{errors.funcao}</div>
+                )}
+              </div>
+              {this.renderInput("email", "Email")}
+              {this.renderInput("password", "password", "Password")}
+              {this.renderInput(
+                "passwordConfirmation",
+                "Confirmar password",
+                "password"
+              )}
+              {this.renderServerError()}
+            </form>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={this.handleClose}>
               Sair
             </Button>
-            <Button variant="dark" onClick={this.handleClose}>
+            <Button variant="dark" onClick={this.handleSubmit}>
               Criar user
             </Button>
           </Modal.Footer>
