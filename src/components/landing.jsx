@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import Sidbar from "./sidbar";
-import accountService from "../services/account";
+import accountService from "../services/accountService";
 import Definicoes from "./definicoes/definicoes";
 
 class Landing extends Component {

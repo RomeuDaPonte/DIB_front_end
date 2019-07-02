@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
 import logo from "../../imagens/LogInImg.jpg";
-import account from "../../services/account";
+import account from "../../services/accountService";
 import "../../estilos/login.css";
 
 class Login extends Component {

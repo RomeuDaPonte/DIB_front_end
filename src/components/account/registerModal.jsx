@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from "react-bootstrap/Modal";
 import Joi from "joi-browser";
-import * as account from "../../services/account";
+import * as account from "../../services/accountService";
 import Button from "react-bootstrap/Button";
 import Form from "../common/form";
 
