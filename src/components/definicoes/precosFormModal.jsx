@@ -34,9 +34,9 @@ class PrecosFormModal extends Form {
   async componentDidMount() {
     const { data } = await precos.getPrecos();
 
-    console.log(data);
-
     this.setState({ data });
+
+    if (data) this.props.showPrecos(data);
   }
 
   handleClose = () => {
@@ -53,6 +53,7 @@ class PrecosFormModal extends Form {
     try {
       const { data } = this.state;
       await precos.setPrecos(data);
+      this.props.showPrecos(data);
       this.handleClose();
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {

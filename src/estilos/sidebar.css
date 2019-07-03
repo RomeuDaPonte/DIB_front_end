@@ -23,7 +23,7 @@
 }
 
 .sidebar_menu {
-  position: fixed;
+  position: absolute;
   float: left;
   overflow: hidden;
   height: 100%;
