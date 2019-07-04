@@ -2,26 +2,37 @@ import React, { Component } from "react";
 import RegisterModal from "../account/registerModal";
 import PrecosFormModal from "./precosFormModal";
 import TabelaDePrecos from "./tabelaDePrecos";
+import { getAllUsers } from "../../services/accountService";
+import TabelaDeUsers from "./tabelaDeUsers";
 
 class Definicoes extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: {
-        automacao: "",
-        consultoria: "",
-        desenvolvimento: "",
-        maquinacao: "",
-        margem: "",
-        montagem: ""
-      }
-    };
-    this.renderPrecos = this.renderPrecos.bind(this);
+  state = {
+    data: {
+      automacao: "",
+      consultoria: "",
+      desenvolvimento: "",
+      maquinacao: "",
+      margem: "",
+      montagem: ""
+    },
+    users: []
+  };
+
+  async componentDidMount() {
+    const { data: users } = await getAllUsers();
+    this.setState({ users });
   }
 
-  renderPrecos(precos) {
+  renderPrecos = precos => {
     this.setState({ data: precos });
-  }
+  };
+
+  addNovoUser = user => {
+    let users = this.state.users;
+    users.push(user);
+
+    this.setState({ users });
+  };
 
   render() {
     const { data: precos } = this.state;
@@ -32,7 +43,7 @@ class Definicoes extends Component {
           <div className="container">
             <div className="row justify-content-center">
               <div className="headerIcon col-2 mt-3">
-                <RegisterModal />
+                <RegisterModal novoUser={this.addNovoUser} />
               </div>
               <div className="headerIcon col-2 mt-3">
                 <PrecosFormModal showPrecos={this.renderPrecos} />
@@ -50,6 +61,7 @@ class Definicoes extends Component {
             montagem={precos.montagem}
           />
         )}
+        <TabelaDeUsers listaDeUsers={this.state.users} />
       </React.Fragment>
     );
   }

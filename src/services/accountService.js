@@ -46,11 +46,16 @@ export async function getRoles() {
   return await http.get(apiEndPont + "/roles");
 }
 
+export async function getAllUsers() {
+  return await http.get(apiEndPont + "/users");
+}
+
 export default {
   login,
   logout,
   getCurrentUser,
   getJwt,
   newUser,
-  getRoles
+  getRoles,
+  getAllUsers
 };

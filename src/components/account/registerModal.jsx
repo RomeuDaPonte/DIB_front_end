@@ -57,7 +57,8 @@ class RegisterModal extends Form {
   async doSubmit() {
     try {
       const { data } = this.state;
-      await account.newUser(data);
+      const { data: newUser } = await account.newUser(data);
+      this.props.novoUser(newUser);
       this.handleClose();
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
@@ -79,7 +80,9 @@ class RegisterModal extends Form {
           </Modal.Header>
           <Modal.Body>
             <form onSubmit={this.handleSubmit}>
+              <label>Nome</label>
               {this.renderInput("username", "Nome do utilizador")}
+              <label>Função</label>
               <div className="form-group">
                 <select
                   name={"funcao"}
@@ -98,8 +101,11 @@ class RegisterModal extends Form {
                   <div className="alert alert-danger">{errors.funcao}</div>
                 )}
               </div>
+              <label>Eamil</label>
               {this.renderInput("email", "Email")}
+              <label>Password</label>
               {this.renderInput("password", "password", "Password")}
+              <label>Confirmar password</label>
               {this.renderInput(
                 "passwordConfirmation",
                 "Confirmar password",

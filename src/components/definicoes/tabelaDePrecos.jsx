@@ -14,46 +14,28 @@ const TabelaDePrecos = ({
         Preços em vigor
       </h4>
       <div className="card-body">
-        <div className="row">
-          <div className="col">
-            <h1>Automação</h1>
-          </div>
-          <div className="col">
-            <h1>Consultoria</h1>
-          </div>
-          <div className="col">
-            <h1>Desenvolvimento</h1>
-          </div>
-          <div className="col">
-            <h1>Maquinação</h1>
-          </div>
-          <div className="col">
-            <h1>Margem</h1>
-          </div>
-          <div className="col">
-            <h1>Montagem</h1>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col">
-            <h1>{automacao}</h1>
-          </div>
-          <div className="col">
-            <h1>{consultoria}</h1>
-          </div>
-          <div className="col">
-            <h1>{desenvolvimento}</h1>
-          </div>
-          <div className="col">
-            <h1>{maquinacao}</h1>
-          </div>
-          <div className="col">
-            <h1>{margem} %</h1>
-          </div>
-          <div className="col">
-            <h1>{montagem}</h1>
-          </div>
-        </div>
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th>Automação</th>
+              <th>Consultoria</th>
+              <th>Desenvolvimento</th>
+              <th>Maquinação</th>
+              <th>Margem</th>
+              <th>Montagem</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{automacao}</td>
+              <td>{consultoria}</td>
+              <td>{desenvolvimento}</td>
+              <td>{maquinacao}</td>
+              <td>{margem} %</td>
+              <td>{montagem}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   );
