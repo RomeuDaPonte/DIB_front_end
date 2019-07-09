@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { toast } from "react-toastify";
 import RegisterModal from "../account/registerModal";
 import PrecosFormModal from "./precosFormModal";
 import TabelaDePrecos from "./tabelaDePrecos";
@@ -34,6 +35,21 @@ class Definicoes extends Component {
     this.setState({ users });
   };
 
+  doUpdateUser = user => {
+    let listaDeUsers = this.state.users;
+
+    let userAEditar = {};
+    listaDeUsers.forEach(element => {
+      if (element._id === user._id) userAEditar = element;
+    });
+
+    const indexDoUserAEditar = listaDeUsers.indexOf(userAEditar);
+    listaDeUsers[indexDoUserAEditar].role = user.role;
+
+    this.setState({ users: listaDeUsers });
+    toast.success("Edição bem sucedida!");
+  };
+
   render() {
     const { data: precos } = this.state;
 
@@ -61,7 +77,11 @@ class Definicoes extends Component {
             montagem={precos.montagem}
           />
         )}
-        <TabelaDeUsers listaDeUsers={this.state.users} />
+
+        <TabelaDeUsers
+          callUpdateUser={this.doUpdateUser}
+          listaDeUsers={this.state.users}
+        />
       </React.Fragment>
     );
   }

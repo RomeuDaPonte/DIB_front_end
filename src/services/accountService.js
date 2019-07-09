@@ -50,6 +50,16 @@ export async function getAllUsers() {
   return await http.get(apiEndPont + "/users");
 }
 
+export async function updateUser(userId, user) {
+  const body = { ...user };
+  delete body.passwordConfirmation;
+  return await http.put(apiEndPont + "/" + userId, body);
+}
+
+export async function getUserById(userId) {
+  return await http.get(apiEndPont, userId);
+}
+
 export default {
   login,
   logout,
@@ -57,5 +67,7 @@ export default {
   getJwt,
   newUser,
   getRoles,
-  getAllUsers
+  getAllUsers,
+  updateUser,
+  getUserById
 };

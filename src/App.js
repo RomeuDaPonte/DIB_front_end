@@ -3,6 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Login from "./components/account/login";
 import Landing from "./components/landing";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
 function App() {
