@@ -37,17 +37,15 @@ class Definicoes extends Component {
 
   doUpdateUser = user => {
     let listaDeUsers = this.state.users;
-
-    let userAEditar = {};
-    listaDeUsers.forEach(element => {
-      if (element._id === user._id) userAEditar = element;
+    let userAEditar = listaDeUsers.find(userElement => {
+      return userElement._id === user._id;
     });
-
-    const indexDoUserAEditar = listaDeUsers.indexOf(userAEditar);
-    listaDeUsers[indexDoUserAEditar].role = user.role;
+    listaDeUsers[listaDeUsers.indexOf(userAEditar)].role = user.role;
 
     this.setState({ users: listaDeUsers });
-    toast.success("Edição bem sucedida!");
+    toast.success("Edição bem sucedida!", {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
   };
 
   render() {
