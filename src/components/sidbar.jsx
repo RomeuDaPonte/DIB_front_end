@@ -27,7 +27,7 @@ class SideBar extends Component {
             <NavLink to="">Obra</NavLink>
           </li>
           <li className="navigation_item">
-            <NavLink to="">Cliente/Fornecedor</NavLink>
+            <NavLink to="entidade">Entidades</NavLink>
           </li>
           <li className="navigation_item sem-border">
             <NavLink to="definicoes">Definições</NavLink>

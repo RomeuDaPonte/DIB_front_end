@@ -3,6 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import Sidbar from "./sidbar";
 import accountService from "../services/accountService";
 import Definicoes from "./definicoes/definicoes";
+import Entidade from "./entidade/entidade";
 
 class Landing extends Component {
   state = {
@@ -21,6 +22,7 @@ class Landing extends Component {
         <div className="contentorPrincipal">
           <Switch>
             <Route path="/definicoes" component={Definicoes} />
+            <Route path="/entidade" component={Entidade} />
           </Switch>
         </div>
       </div>
