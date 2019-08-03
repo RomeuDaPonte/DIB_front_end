@@ -16,7 +16,7 @@ class TabelaDeUsers extends Component {
 
     return (
       <div className="card m-2">
-        <h4 className="card-header bg-info text-white bg-dark">
+        <h4 className="card-header text-white bg-dark">
           Lista de utilizadores
         </h4>
         <div className="card-body">

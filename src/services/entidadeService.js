@@ -11,7 +11,12 @@ export async function getTiposDeEntidade() {
   return await http.get(apiEndPoint + "/gettipos");
 }
 
+export async function getAllEntidades() {
+  return await http.get(apiEndPoint + "/getall");
+}
+
 export default {
   getCondicoesDePagamento,
-  getTiposDeEntidade
+  getTiposDeEntidade,
+  getAllEntidades
 };

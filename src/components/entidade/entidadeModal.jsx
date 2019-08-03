@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import Modal from "react-bootstrap/Modal";
 import * as entidade from "../../services/entidadeService";
 import Button from "react-bootstrap/Button";
