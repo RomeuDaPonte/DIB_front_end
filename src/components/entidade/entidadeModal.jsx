@@ -1,6 +1,7 @@
 import React from "react";
 import Modal from "react-bootstrap/Modal";
 import * as entidade from "../../services/entidadeService";
+import Joi from "joi-browser";
 import Button from "react-bootstrap/Button";
 import Form from "../common/form";
 
@@ -22,6 +23,22 @@ class EntidadeModal extends Form {
     show: false
   };
 
+  schema = {
+    name: Joi.string()
+      .required()
+      .label("Nome"),
+    tipo: Joi.string()
+      .required()
+      .label("Tipo de entidade"),
+    nif: Joi.any(),
+    morada: Joi.any(),
+    codigoPostal: Joi.any(),
+    localidade: Joi.any(),
+    condicoesDePagamento: Joi.string()
+      .required()
+      .label("Concições de pagamento")
+  };
+
   async componentDidMount() {
     const {
       data: condicoesDePagamentoDisponiveis
@@ -29,6 +46,11 @@ class EntidadeModal extends Form {
     const { data: tiposDeEntidades } = await entidade.getTiposDeEntidade();
 
     this.setState({ tiposDeEntidades, condicoesDePagamentoDisponiveis });
+
+    if (this.props.entidadeId) {
+      const { data } = await entidade.getSingleEntidade(this.props.entidadeId);
+      this.setState({ data });
+    }
   }
 
   handleClose = () => {
@@ -41,6 +63,18 @@ class EntidadeModal extends Form {
     this.setState({ show });
   };
 
+  renderIcon = () => {
+    if (this.props.entidadeId)
+      return <i className="fa fa-edit btnClick" onClick={this.handleShow} />;
+
+    return <i className="fa fa-users fa-5x" onClick={this.handleShow} />;
+  };
+
+  async doSubmit() {
+    const { data } = this.state;
+    console.log(data);
+  }
+
   render() {
     const {
       data,
@@ -51,7 +85,7 @@ class EntidadeModal extends Form {
 
     return (
       <React.Fragment>
-        <i className="fa fa-users fa-5x" onClick={this.handleShow} />
+        {this.renderIcon()}
 
         <Modal show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
@@ -106,9 +140,9 @@ class EntidadeModal extends Form {
                     </option>
                   ))}
                 </select>
-                {errors.condicaoDePagamento && (
+                {errors.condicoesDePagamento && (
                   <div className="alert alert-danger">
-                    {errors.condicaoDePagamento}
+                    {errors.condicoesDePagamento}
                   </div>
                 )}
               </div>
@@ -120,7 +154,7 @@ class EntidadeModal extends Form {
               Sair
             </Button>
             <Button variant="dark" onClick={this.handleSubmit}>
-              Criar user
+              Add entidade
             </Button>
           </Modal.Footer>
         </Modal>

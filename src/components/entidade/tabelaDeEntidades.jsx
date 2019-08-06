@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import EntidadeModal from "./entidadeModal";
 
 class TabelaDeEntidades extends Component {
   render() {
@@ -28,7 +29,9 @@ class TabelaDeEntidades extends Component {
                     <td>{entidade.localidade}</td>
                     <td>{entidade.condicoesDePagamento}</td>
                     <td>{entidade.tipo}</td>
-                    <td>Editar</td>
+                    <td>
+                      <EntidadeModal entidadeId={entidade._id} />
+                    </td>
                   </tr>
                 ))}
             </tbody>
