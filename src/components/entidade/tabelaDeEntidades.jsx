@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import EntidadeModal from "./entidadeModal";
 
 class TabelaDeEntidades extends Component {
+  updateEntidade = novaEntidade => {
+    this.props.updateListaDeEntidades(novaEntidade);
+  };
+
   render() {
     const { listaDeEntidades } = this.props;
 
@@ -30,7 +34,10 @@ class TabelaDeEntidades extends Component {
                     <td>{entidade.condicoesDePagamento}</td>
                     <td>{entidade.tipo}</td>
                     <td>
-                      <EntidadeModal entidadeId={entidade._id} />
+                      <EntidadeModal
+                        entidadeId={entidade._id}
+                        updateListaDeEntidades={this.updateEntidade}
+                      />
                     </td>
                   </tr>
                 ))}

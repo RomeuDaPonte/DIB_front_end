@@ -9,12 +9,14 @@ class EntidadeModal extends Form {
   state = {
     data: {
       name: "",
+      tipo: "",
       nif: "",
       morada: "",
       codigoPostal: "",
       localidade: "",
       condicoesDePagamento: "",
-      tipo: ""
+      _id: "",
+      __v: ""
     },
     condicoesDePagamentoDisponiveis: [],
     tiposDeEntidades: [],
@@ -36,7 +38,9 @@ class EntidadeModal extends Form {
     localidade: Joi.any(),
     condicoesDePagamento: Joi.string()
       .required()
-      .label("Concições de pagamento")
+      .label("Concições de pagamento"),
+    _id: Joi.any(),
+    __v: Joi.any()
   };
 
   async componentDidMount() {
@@ -54,13 +58,11 @@ class EntidadeModal extends Form {
   }
 
   handleClose = () => {
-    const show = false;
-    this.setState({ show });
+    this.setState({ show: false });
   };
 
   handleShow = () => {
-    const show = true;
-    this.setState({ show });
+    this.setState({ show: true });
   };
 
   renderIcon = () => {
@@ -72,7 +74,13 @@ class EntidadeModal extends Form {
 
   async doSubmit() {
     const { data } = this.state;
-    console.log(data);
+
+    let dadosEntidade = {};
+    if (data._id) dadosEntidade = await entidade.editar(data);
+    else dadosEntidade = await entidade.novaEntidade(data);
+
+    this.props.updateListaDeEntidades(dadosEntidade.data);
+    this.handleClose();
   }
 
   render() {
@@ -89,7 +97,7 @@ class EntidadeModal extends Form {
 
         <Modal show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Entidade</Modal.Title>
+            <Modal.Title>Nova Entidade</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <form onSubmit={this.handleSubmit}>
@@ -154,7 +162,7 @@ class EntidadeModal extends Form {
               Sair
             </Button>
             <Button variant="dark" onClick={this.handleSubmit}>
-              Add entidade
+              Guardar
             </Button>
           </Modal.Footer>
         </Modal>
