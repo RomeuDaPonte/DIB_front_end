@@ -1,79 +1,73 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import EntidadeModal from "./entidadeModal";
 import * as entidade from "../../services/entidadeService";
 import TabelaDeEntidades from "./tabelaDeEntidades";
 import PesquisaEntidadeModal from "./pesquisaEntidadeModal";
 
-class Entidade extends Component {
-  state = {
+const Entidade = () => {
+  const state = {
     entidades: []
   };
 
-  async componentDidMount() {
+  const [currentState, setEntidades] = useState(state);
+
+  useEffect(async () => {
     const { data: entidades } = await entidade.getAllEntidades();
+    setEntidades({ entidades });
+  }, []);
 
-    this.setState({ entidades });
-  }
-
-  updateListaDeEntidades = novaEntidade => {
-    const listaDeEntidades = this.state.entidades;
+  function updateListaDeEntidades(novaEntidade) {
+    const listaDeEntidades = currentState.entidades;
     let entidadeAEditar = listaDeEntidades.find(entida => {
       return entida._id === novaEntidade._id;
     });
 
-    if (entidadeAEditar)
-      this.updateSingleEntidade(entidadeAEditar, novaEntidade);
-    else this.addNovaEntidade(novaEntidade);
+    if (entidadeAEditar) updateSingleEntidade(entidadeAEditar, novaEntidade);
+    else addNovaEntidade(novaEntidade);
 
     toast.success("Alterações efectuadas com sucesso!", {
       position: toast.POSITION.BOTTOM_RIGHT
     });
-  };
+  }
 
-  mostraResultadosDaPesquisa = resultadosDaPesquisa => {
-    this.setState({ entidades: resultadosDaPesquisa });
-  };
+  function mostraResultadosDaPesquisa(resultadosDaPesquisa) {
+    setEntidades({ entidades: resultadosDaPesquisa });
+  }
 
-  updateSingleEntidade(entidadeAEditar, novaEntidade) {
-    const listaDeEntidades = this.state.entidades;
+  function updateSingleEntidade(entidadeAEditar, novaEntidade) {
+    const listaDeEntidades = currentState.entidades;
     listaDeEntidades[listaDeEntidades.indexOf(entidadeAEditar)] = novaEntidade;
 
-    this.setState({ entidade: listaDeEntidades });
+    setEntidades({ entidades: listaDeEntidades });
   }
 
-  addNovaEntidade(novaEntidade) {
-    const listaDeEntidades = this.state.entidades;
+  function addNovaEntidade(novaEntidade) {
+    const listaDeEntidades = state.entidades;
     listaDeEntidades.push(novaEntidade);
-    this.setState({ entidades: listaDeEntidades });
+    setEntidades({ entidades: listaDeEntidades });
   }
 
-  render() {
-    return (
-      <React.Fragment>
-        <div className="headerStyles">
-          <div className="container">
-            <div className="row justify-content-center">
-              <div className="headerIcon col-2 mt-3">
-                <EntidadeModal
-                  updateListaDeEntidades={this.updateListaDeEntidades}
-                />
-              </div>
-              <div className="headerIcon col-2 mt-3">
-                <PesquisaEntidadeModal
-                  pesquisar={this.mostraResultadosDaPesquisa}
-                />
-              </div>
+  return (
+    <React.Fragment>
+      <div className="headerStyles">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="headerIcon col-2 mt-3">
+              <EntidadeModal updateListaDeEntidades={updateListaDeEntidades} />
+            </div>
+            <div className="headerIcon col-2 mt-3">
+              <PesquisaEntidadeModal pesquisar={mostraResultadosDaPesquisa} />
             </div>
           </div>
         </div>
-        <TabelaDeEntidades
-          listaDeEntidades={this.state.entidades}
-          updateListaDeEntidades={this.updateListaDeEntidades}
-        />
-      </React.Fragment>
-    );
-  }
-}
+      </div>
+      <TabelaDeEntidades
+        listaDeEntidades={currentState.entidades}
+        updateListaDeEntidades={updateListaDeEntidades}
+      />
+    </React.Fragment>
+  );
+};
 
 export default Entidade;
