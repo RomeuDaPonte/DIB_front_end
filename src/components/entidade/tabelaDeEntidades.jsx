@@ -35,7 +35,7 @@ class TabelaDeEntidades extends Component {
                     <td>{entidade.tipo}</td>
                     <td>
                       <EntidadeModal
-                        entidadeId={entidade._id}
+                        entidade={entidade}
                         updateListaDeEntidades={this.updateEntidade}
                       />
                     </td>

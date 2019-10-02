@@ -24,6 +24,7 @@ export const useForm = ({ initialState, schema }) => {
     data[input.name] = input.value;
 
     setValues({
+      ...currentState,
       data,
       errors
     });

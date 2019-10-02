@@ -12,9 +12,11 @@ const Entidade = () => {
 
   const [currentState, setEntidades] = useState(state);
 
-  useEffect(async () => {
-    const { data: entidades } = await entidade.getAllEntidades();
-    setEntidades({ entidades });
+  useEffect(() => {
+    (async function() {
+      const { data: entidades } = await entidade.getAllEntidades();
+      setEntidades({ entidades });
+    })();
   }, []);
 
   function updateListaDeEntidades(novaEntidade) {
@@ -43,7 +45,7 @@ const Entidade = () => {
   }
 
   function addNovaEntidade(novaEntidade) {
-    const listaDeEntidades = state.entidades;
+    const listaDeEntidades = currentState.entidades;
     listaDeEntidades.push(novaEntidade);
     setEntidades({ entidades: listaDeEntidades });
   }
