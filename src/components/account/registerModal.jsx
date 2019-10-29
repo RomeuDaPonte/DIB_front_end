@@ -1,12 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import Joi from "joi-browser";
 import * as account from "../../services/accountService";
 import Button from "react-bootstrap/Button";
-import Form from "../common/form";
+import { useModalToogle } from "../common/customHooks/useModalToogle";
+import { useForm } from "../common/customHooks/userForm";
+import { renderInput } from "../common/formInputs";
 
-class RegisterModal extends Form {
-  state = {
+const RegisterModal = props => {
+  const modalState = {
+    show: false
+  };
+  const [currentModalState, toogleModal] = useModalToogle(modalState);
+
+  const initialState = {
     data: {
       username: "",
       funcao: "",
@@ -20,7 +27,7 @@ class RegisterModal extends Form {
     show: false
   };
 
-  schema = {
+  const schema = {
     username: Joi.string()
       .required()
       .label("Username"),
@@ -38,94 +45,114 @@ class RegisterModal extends Form {
     passwordConfirmation: Joi.ref("password")
   };
 
-  async componentDidMount() {
-    const { data } = await account.getRoles();
+  const [currentFormState, handleChange, canSubmit, setFormValues] = useForm({
+    initialState,
+    schema
+  });
 
-    this.setState({ funcoes: data });
-  }
+  useEffect(() => {
+    (async function() {
+      const { data } = await account.getRoles();
+      setFormValues({
+        ...initialState,
+        funcoes: data
+      });
+    })();
 
-  handleClose = () => {
-    const show = false;
-    this.setState({ show });
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  handleShow = () => {
-    const show = true;
-    this.setState({ show });
-  };
-
-  async doSubmit() {
+  async function doSubmit(e) {
+    if (!canSubmit(e)) return;
     try {
-      const { data } = this.state;
-      const { data: newUser } = await account.newUser(data);
-      this.props.novoUser(newUser);
-      this.handleClose();
+      const { data: user } = currentFormState;
+      const { data: newUser } = await account.newUser(user);
+      props.novoUser(newUser);
+      toogleModal();
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
-        this.setState({ formError: ex.response.data });
+        setFormValues({
+          ...currentFormState,
+          formError: ex.response.data
+        });
       }
     }
   }
 
-  render() {
-    const { data, funcoes, errors } = this.state;
+  return (
+    <React.Fragment>
+      <i className="fa fa-user-plus fa-5x" onClick={toogleModal} />
 
-    return (
-      <React.Fragment>
-        <i className="fa fa-user-plus fa-5x" onClick={this.handleShow} />
-
-        <Modal show={this.state.show} onHide={this.handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Novo utilizador</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <form onSubmit={this.handleSubmit}>
-              <label>Nome</label>
-              {this.renderInput("username", "Nome do utilizador")}
-              <label>Função</label>
-              <div className="form-group">
-                <select
-                  name={"funcao"}
-                  value={data.funcao}
-                  onChange={this.handleChange}
-                  className="form-control"
-                >
-                  <option value="">Escolha um função </option>
-                  {funcoes.map(funcao => (
-                    <option key={funcao} value={funcao}>
-                      {funcao}
-                    </option>
-                  ))}
-                </select>
-                {errors.funcao && (
-                  <div className="alert alert-danger">{errors.funcao}</div>
-                )}
-              </div>
-              <label>Eamil</label>
-              {this.renderInput("email", "Email")}
-              <label>Password</label>
-              {this.renderInput("password", "password", "Password")}
-              <label>Confirmar password</label>
-              {this.renderInput(
-                "passwordConfirmation",
-                "Confirmar password",
-                "password"
+      <Modal show={currentModalState.show} onHide={toogleModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Novo utilizador</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form onSubmit={doSubmit}>
+            <label>Nome</label>
+            {renderInput(
+              currentFormState,
+              "username",
+              handleChange,
+              "Nome do utilizador"
+            )}
+            <label>Função</label>
+            <div className="form-group">
+              <select
+                name={"funcao"}
+                value={currentFormState.data.funcao}
+                onChange={handleChange}
+                className="form-control"
+              >
+                <option value="">Escolha um função </option>
+                {currentFormState.funcoes.map(funcao => (
+                  <option key={funcao} value={funcao}>
+                    {funcao}
+                  </option>
+                ))}
+              </select>
+              {currentFormState.errors.funcao && (
+                <div className="alert alert-danger">
+                  {currentFormState.errors.funcao}
+                </div>
               )}
-              {this.renderServerError()}
-            </form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={this.handleClose}>
-              Sair
-            </Button>
-            <Button variant="dark" onClick={this.handleSubmit}>
-              Criar user
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </React.Fragment>
-    );
-  }
-}
+            </div>
+            <label>Eamil</label>
+            {renderInput(currentFormState, "email", handleChange, "Email")}
+            <label>Password</label>
+            {renderInput(
+              currentFormState,
+              "password",
+              handleChange,
+              "password",
+              "Password"
+            )}
+            <label>Confirmar password</label>
+            {renderInput(
+              currentFormState,
+              "passwordConfirmation",
+              handleChange,
+              "Confirmar password",
+              "password"
+            )}
+            {currentFormState.formError && (
+              <div className="alert alert-danger">
+                {currentFormState.formError}
+              </div>
+            )}
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={toogleModal}>
+            Sair
+          </Button>
+          <Button variant="dark" onClick={doSubmit}>
+            Criar user
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </React.Fragment>
+  );
+};
 
 export default RegisterModal;

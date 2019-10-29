@@ -4,6 +4,7 @@ import Sidbar from "./sidbar";
 import accountService from "../services/accountService";
 import Definicoes from "./definicoes/definicoes";
 import Entidade from "./entidade/entidade";
+import Orcamento from "./orcamento/orcamento";
 
 const Landing = () => {
   const state = {
@@ -24,6 +25,7 @@ const Landing = () => {
         <Switch>
           <Route path="/definicoes" component={Definicoes} />
           <Route path="/entidade" component={Entidade} />
+          <Route path="/orcamento" component={Orcamento} />
         </Switch>
       </div>
     </div>

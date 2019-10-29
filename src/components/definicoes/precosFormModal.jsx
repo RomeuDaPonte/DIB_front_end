@@ -1,12 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Joi from "joi-browser";
-import Form from "../common/form";
+import { useModalToogle } from "../common/customHooks/useModalToogle";
+import { useForm } from "../common/customHooks/userForm";
+import { renderInput } from "../common/formInputs";
 import * as precos from "../../services/precosService";
 
-class PrecosFormModal extends Form {
-  state = {
+const PrecosFormModal = props => {
+  const modalState = {
+    show: false
+  };
+  const [currentModalState, toogleModal] = useModalToogle(modalState);
+
+  const initialState = {
     data: {
       automacao: "",
       consultoria: "",
@@ -16,11 +23,10 @@ class PrecosFormModal extends Form {
       montagem: ""
     },
     errors: [],
-    formError: "",
-    show: false
+    formError: ""
   };
 
-  schema = {
+  const schema = {
     automacao: Joi.number().required(),
     consultoria: Joi.number().required(),
     desenvolvimento: Joi.number().required(),
@@ -31,75 +37,112 @@ class PrecosFormModal extends Form {
     montagem: Joi.number().required()
   };
 
-  async componentDidMount() {
-    const { data } = await precos.getPrecos();
+  const [currentFormState, handleChange, canSubmit, setFormValues] = useForm({
+    initialState,
+    schema
+  });
 
-    this.setState({ data });
+  useEffect(() => {
+    setFormValues({
+      ...initialState,
+      data: props.precos
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.precos]);
 
-    if (data) this.props.showPrecos(data);
-  }
+  async function doSubmit(e) {
+    if (!canSubmit(e)) return;
 
-  handleClose = () => {
-    const show = false;
-    this.setState({ show });
-  };
-
-  handleShow = () => {
-    const show = true;
-    this.setState({ show });
-  };
-
-  async doSubmit() {
+    const { data } = currentFormState;
     try {
-      const { data } = this.state;
       await precos.setPrecos(data);
-      this.props.showPrecos(data);
-      this.handleClose();
+      props.updatePrecos(data);
+      toogleModal();
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
-        this.setState({ formError: ex.response.data });
+        setFormValues({
+          ...currentFormState,
+          formError: ex.response.data
+        });
       }
     }
   }
+  return (
+    <React.Fragment>
+      <i className="fa fa-dollar fa-5x" onClick={toogleModal} />
 
-  render() {
-    return (
-      <React.Fragment>
-        <i className="fa fa-dollar fa-5x" onClick={this.handleShow} />
-
-        <Modal show={this.state.show} onHide={this.handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Definir preços</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <form onSubmit={this.handleSubmit}>
-              <label>Automação</label>
-              {this.renderInput("automacao", "Automação", "number")}
-              <label>Consultoria</label>
-              {this.renderInput("consultoria", "Consultoria", "number")}
-              <label>Desenvolvimento</label>
-              {this.renderInput("desenvolvimento", "Desenvolvimento", "number")}
-              <label>Maquinação</label>
-              {this.renderInput("maquinacao", "Maquinação", "number")}
-              <label>Margem</label>
-              {this.renderInput("margem", "Margem", "number")}
-              <label>Montagem</label>
-              {this.renderInput("montagem", "Montagem", "number")}
-              {this.renderServerError()}
-            </form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={this.handleClose}>
-              Sair
-            </Button>
-            <Button variant="dark" onClick={this.handleSubmit}>
-              Definir
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </React.Fragment>
-    );
-  }
-}
+      <Modal show={currentModalState.show} onHide={toogleModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Definir preços </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form onSubmit={doSubmit}>
+            <label>Automação {props.precos.automacao}</label>
+            {renderInput(
+              currentFormState,
+              "automacao",
+              handleChange,
+              "Automação",
+              "number"
+            )}
+            <label>Consultoria</label>
+            {renderInput(
+              currentFormState,
+              "consultoria",
+              handleChange,
+              "Consultoria",
+              "number"
+            )}
+            <label>Desenvolvimento</label>
+            {renderInput(
+              currentFormState,
+              "desenvolvimento",
+              handleChange,
+              "Desenvolvimento",
+              "number"
+            )}
+            <label>Maquinação</label>
+            {renderInput(
+              currentFormState,
+              "maquinacao",
+              handleChange,
+              "Maquinação",
+              "number"
+            )}
+            <label>Margem</label>
+            {renderInput(
+              currentFormState,
+              "margem",
+              handleChange,
+              "Margem",
+              "number"
+            )}
+            <label>Montagem</label>
+            {renderInput(
+              currentFormState,
+              "montagem",
+              handleChange,
+              "Montagem",
+              "number"
+            )}
+            {currentFormState.formError && (
+              <div className="alert alert-danger">
+                {currentFormState.formError}
+              </div>
+            )}
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={toogleModal}>
+            Sair
+          </Button>
+          <Button variant="dark" onClick={doSubmit}>
+            Definir
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </React.Fragment>
+  );
+};
 
 export default PrecosFormModal;
