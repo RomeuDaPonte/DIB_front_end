@@ -11,3 +11,7 @@ export async function novo(orcamento) {
     elaboradoPorId: orcamento.elaboradoPorId
   });
 }
+
+export async function getAll() {
+  return await http.get(apiEndPoint + "/getall");
+}
