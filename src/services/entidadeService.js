@@ -53,6 +53,10 @@ export async function getSingleEntidade(entidadeId) {
   return await http.get(apiEndPoint + "/" + entidadeId);
 }
 
+export async function getAllClientes() {
+  return await http.get(apiEndPoint + "/getallclientes");
+}
+
 export default {
   novaEntidade
 };

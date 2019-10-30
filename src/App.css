@@ -81,3 +81,7 @@ tbody {
 .btnClick {
   cursor: pointer;
 }
+
+.toolTipMd {
+  font-size: 1.5em;
+}
