@@ -1,7 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 
 const TabelaDeOrcamentos = props => {
   const { orcamentos } = props;
+
   return (
     <div className="card m-2">
       <h4 className="card-header text-white bg-dark">Lista de orçamentos</h4>
@@ -23,11 +24,11 @@ const TabelaDeOrcamentos = props => {
               orcamentos.map(orc => (
                 <tr key={orc._id}>
                   <td>{orc.numero}</td>
-                  <td></td>
+                  <td>{orc.cliente.name}</td>
                   <td>{orc.tecnicoResponsavel}</td>
                   <td>{orc.descritivo}</td>
                   <td>{orc.data.toString().slice(0, 10)}</td>
-                  <td></td>
+                  <td>{orc.elaboradoPor.name}</td>
                   <td></td>
                 </tr>
               ))}

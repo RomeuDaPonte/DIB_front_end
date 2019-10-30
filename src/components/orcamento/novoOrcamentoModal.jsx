@@ -10,7 +10,7 @@ import * as entidade from "../../services/entidadeService";
 import * as user from "../../services/accountService";
 import * as orcamento from "../../services/orcamento";
 
-const NovoOrcamentoModal = () => {
+const NovoOrcamentoModal = props => {
   const modalState = {
     show: false
   };
@@ -77,7 +77,8 @@ const NovoOrcamentoModal = () => {
 
     const { data } = currentFormState;
     try {
-      const orcGuardado = await orcamento.novo(data);
+      const { data: orcGuardado } = await orcamento.novo(data);
+      props.addNovoOrcamento(orcGuardado);
       toogleModal();
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
