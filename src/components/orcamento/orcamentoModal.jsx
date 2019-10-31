@@ -10,7 +10,7 @@ import * as entidade from "../../services/entidadeService";
 import * as user from "../../services/accountService";
 import * as orcamento from "../../services/orcamento";
 
-const NovoOrcamentoModal = props => {
+const OrcamentoModal = props => {
   const modalState = {
     show: false
   };
@@ -50,17 +50,31 @@ const NovoOrcamentoModal = props => {
     schema
   });
 
-  useEffect(() => {
-    (async function() {
-      const { data: clientes } = await entidade.getAllClientes();
-      const { data: users } = await user.getAllUsers();
-      const currentUser = user.getCurrentUser();
-      const data = {
+  function initializeData() {
+    const { orcamento } = props;
+    const currentUser = user.getCurrentUser();
+    if (!orcamento) {
+      return {
         clienteId: "",
         descritivo: "",
         tecnicoResponsavel: "",
         elaboradoPorId: currentUser._id
       };
+    }
+    return {
+      clienteId: orcamento.clienteId,
+      descritivo: orcamento.descritivo,
+      tecnicoResponsavel: orcamento.tecnicoResponsavel,
+      elaboradoPorId: orcamento.elaboradoPorId
+    };
+  }
+
+  useEffect(() => {
+    (async function() {
+      const { data: clientes } = await entidade.getAllClientes();
+      const { data: users } = await user.getAllUsers();
+      const currentUser = user.getCurrentUser();
+      const data = initializeData();
       setFormValues({
         ...formState,
         listaDeClientes: clientes,
@@ -90,6 +104,16 @@ const NovoOrcamentoModal = props => {
     }
   }
 
+  function renderNomoDoCliente() {
+    const { orcamento } = props;
+    if (orcamento) {
+      return (
+        <option value={orcamento.clienteId}>{orcamento.cliente.name}</option>
+      );
+    }
+    return <option value=""></option>;
+  }
+
   function renderForm() {
     if (currentFormState) {
       const { data, listaDeClientes, errors } = currentFormState;
@@ -104,7 +128,7 @@ const NovoOrcamentoModal = props => {
               onChange={handleChange}
               className="form-control"
             >
-              <option value=""></option>
+              {renderNomoDoCliente()}
               {listaDeClientes.map(cliente => (
                 <option key={cliente._id} value={cliente._id}>
                   {cliente.name}
@@ -165,14 +189,47 @@ const NovoOrcamentoModal = props => {
     );
   }
 
+  function renderIcon() {
+    const { orcamento } = props;
+    if (!orcamento) {
+      return (
+        <React.Fragment>
+          <ReactTooltip
+            id="NovoOrcamento"
+            className="toolTipMd"
+            place="bottom"
+            delayHide={500}
+          />
+          <i
+            data-for="NovoOrcamento"
+            data-tip="Novo orçamento"
+            className="fa fa-paper-plane fa-5x btnClick"
+            onClick={toogleModal}
+          ></i>
+        </React.Fragment>
+      );
+    }
+    return (
+      <React.Fragment>
+        <ReactTooltip
+          id="EditarOrcamento"
+          className="toolTip"
+          place="top"
+          delayHide={500}
+        />
+        <i
+          data-tip="Editar orçamento"
+          data-for="EditarOrcamento"
+          className="fa fa-edit btnClick"
+          onClick={toogleModal}
+        ></i>
+      </React.Fragment>
+    );
+  }
+
   return (
     <React.Fragment>
-      <ReactTooltip className="toolTipMd" place="bottom" delayHide={500} />
-      <i
-        data-tip="Novo orçamento"
-        className="fa fa-paper-plane fa-5x btnClick"
-        onClick={toogleModal}
-      ></i>
+      {renderIcon()}
       <Modal show={currentModalState.show} onHide={toogleModal}>
         <Modal.Header closeButton>
           <Modal.Title>Novo orçamento</Modal.Title>
@@ -191,4 +248,4 @@ const NovoOrcamentoModal = props => {
   );
 };
 
-export default NovoOrcamentoModal;
+export default OrcamentoModal;

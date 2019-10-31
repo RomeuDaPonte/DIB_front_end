@@ -1,4 +1,5 @@
 import React from "react";
+import OrcamentoModal from "./orcamentoModal";
 
 const TabelaDeOrcamentos = props => {
   const { orcamentos } = props;
@@ -29,7 +30,9 @@ const TabelaDeOrcamentos = props => {
                   <td>{orc.descritivo}</td>
                   <td>{orc.data.toString().slice(0, 10)}</td>
                   <td>{orc.elaboradoPor.name}</td>
-                  <td></td>
+                  <td>
+                    <OrcamentoModal orcamento={orc} />
+                  </td>
                 </tr>
               ))}
           </tbody>

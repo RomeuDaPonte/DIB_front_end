@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import NovoOrcamentoModal from "./novoOrcamentoModal";
+import OrcamentoModal from "./orcamentoModal";
 import TabelaDeOrcamentos from "./tabelaDeOrcamentos";
 import * as orcamento from "../../services/orcamento";
 
@@ -21,6 +21,11 @@ const Orcamento = () => {
   function addNovoOrcamento(novoOrcamento) {
     const orcamentos = currentState.orcamentos;
     orcamentos.push(novoOrcamento);
+    orcamentos.sort((a, b) => {
+      if (a.numero < b.numero) return 1;
+      if (a.numero > b.numero) return -1;
+      return 0;
+    });
     setOrcamentos({ orcamentos });
 
     toast.success("Orçamento criado com sucesso!", {
@@ -34,7 +39,7 @@ const Orcamento = () => {
         <div className="container">
           <div className="row justify-content-certer">
             <div className="headerIcon col-2 mt-3">
-              <NovoOrcamentoModal addNovoOrcamento={addNovoOrcamento} />
+              <OrcamentoModal addNovoOrcamento={addNovoOrcamento} />
             </div>
           </div>
         </div>
