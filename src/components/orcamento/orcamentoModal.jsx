@@ -63,10 +63,10 @@ const OrcamentoModal = props => {
       };
     }
     return {
-      clienteId: orcamento.clienteId,
+      clienteId: orcamento.cliente._id,
       descritivo: orcamento.descritivo,
       tecnicoResponsavel: orcamento.tecnicoResponsavel,
-      elaboradoPorId: orcamento.elaboradoPorId
+      elaboradoPorId: orcamento.elaboradoPor._id
     };
   }
 
