@@ -20,7 +20,7 @@ const SideBar = props => {
       </center>
       <ul className="navigation_section">
         <li className="navigation_item">
-          <NavLink to="orcamento">Orçamentos</NavLink>
+          <NavLink to="listaDeOrcamentos">Orçamentos</NavLink>
         </li>
         <li className="navigation_item">
           <NavLink to="">Obra</NavLink>
