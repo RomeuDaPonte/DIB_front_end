@@ -8,7 +8,7 @@ import { useModalToogle } from "../common/customHooks/useModalToogle";
 import { useForm } from "../common/customHooks/userForm";
 import * as entidade from "../../services/entidadeService";
 import * as user from "../../services/accountService";
-import * as orcamento from "../../services/orcamento";
+import * as orcamento from "../../services/orcamentoDadosGeraisService";
 import ModalTitle from "react-bootstrap/ModalTitle";
 
 const OrcamentoModal = props => {

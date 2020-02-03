@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import TabelaDeOrcamentos from "./tabelaDeOrcamentos";
-import * as orcamento from "../../services/orcamento";
+import * as orcamento from "../../services/orcamentoDadosGeraisService";
 import MenuOrcamentos from "./menuOrcamentos";
 import OrcamentoElaboracao from "./orcamentoElaboracao";
 
