@@ -1,7 +1,7 @@
 import http from "./httpService";
 import { apiUrl } from "../config.json";
 
-const apiEndPoint = apiUrl + "/orcamento";
+const apiEndPoint = apiUrl + "/orcamentodadosGerais";
 
 export async function novo(orcamento) {
   return await http.post(apiEndPoint, {
