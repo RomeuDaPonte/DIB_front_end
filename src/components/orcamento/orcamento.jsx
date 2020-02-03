@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import OrcamentoModal from "./orcamentoModal";
 import TabelaDeOrcamentos from "./tabelaDeOrcamentos";
 import * as orcamento from "../../services/orcamento";
+import MenuOrcamentos from "./menuOrcamentos";
+import OrcamentoElaboracao from "./orcamentoElaboracao";
 
 const Orcamento = () => {
   const state = {
-    orcamentos: []
+    orcamentos: [],
+    orcamentoAElaborar: {}
   };
 
   const [currentState, setOrcamentos] = useState(state);
@@ -14,37 +16,30 @@ const Orcamento = () => {
   useEffect(() => {
     (async function() {
       const { data: orcamentos } = await orcamento.getAll();
-      setOrcamentos({ orcamentos });
+      setOrcamentos({ ...currentState, orcamentos });
     })();
   }, []);
 
   function addNovoOrcamento(novoOrcamento) {
-    const orcamentos = currentState.orcamentos;
-    orcamentos.push(novoOrcamento);
-    orcamentos.sort((a, b) => {
-      if (a.numero < b.numero) return 1;
-      if (a.numero > b.numero) return -1;
-      return 0;
-    });
-    setOrcamentos({ orcamentos });
+    setOrcamentos({ orcamentoAElaborar: novoOrcamento });
 
     toast.success("Orçamento criado com sucesso!", {
       position: toast.POSITION.BOTTOM_RIGHT
     });
   }
 
+  function renderElaborarOrcamento() {
+    const { orcamentoAElaborar } = currentState;
+    if (Object.entries(orcamentoAElaborar).length === 0)
+      return <TabelaDeOrcamentos orcamentos={currentState.orcamentos} />;
+
+    return <OrcamentoElaboracao orcamento={currentState.orcamentoAElaborar} />;
+  }
+
   return (
     <React.Fragment>
-      <div className="headerStyles">
-        <div className="container">
-          <div className="row justify-content-certer">
-            <div className="headerIcon col-2 mt-3">
-              <OrcamentoModal addNovoOrcamento={addNovoOrcamento} />
-            </div>
-          </div>
-        </div>
-      </div>
-      <TabelaDeOrcamentos orcamentos={currentState.orcamentos} />
+      <MenuOrcamentos addNovoOrcamento={addNovoOrcamento} />
+      {renderElaborarOrcamento()}
     </React.Fragment>
   );
 };

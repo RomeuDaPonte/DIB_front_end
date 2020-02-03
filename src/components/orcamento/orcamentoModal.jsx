@@ -9,6 +9,7 @@ import { useForm } from "../common/customHooks/userForm";
 import * as entidade from "../../services/entidadeService";
 import * as user from "../../services/accountService";
 import * as orcamento from "../../services/orcamento";
+import ModalTitle from "react-bootstrap/ModalTitle";
 
 const OrcamentoModal = props => {
   const modalState = {
@@ -227,13 +228,19 @@ const OrcamentoModal = props => {
     );
   }
 
+  function renderModalTitle() {
+    const { orcamento } = props;
+    if (!orcamento) {
+      return <ModalTitle>Novo Orçamento</ModalTitle>;
+    }
+    return <ModalTitle>Editar orçamento</ModalTitle>;
+  }
+
   return (
     <React.Fragment>
       {renderIcon()}
       <Modal show={currentModalState.show} onHide={toogleModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Novo orçamento</Modal.Title>
-        </Modal.Header>
+        <Modal.Header closeButton>{renderModalTitle()}</Modal.Header>
         <Modal.Body>{renderForm()}</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={toogleModal}>
