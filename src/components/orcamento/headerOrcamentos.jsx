@@ -1,7 +1,7 @@
 import React from "react";
 import OrcamentoModal from "./orcamentoModal";
 
-const MenuOrcamentos = props => {
+const HeaderListaDeOrcamentos = props => {
   return (
     <div className="headerStyles">
       <div className="container">
@@ -15,4 +15,4 @@ const MenuOrcamentos = props => {
   );
 };
 
-export default MenuOrcamentos;
+export default HeaderListaDeOrcamentos;

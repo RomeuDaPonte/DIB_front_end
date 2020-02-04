@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import TabelaDeOrcamentos from "./tabelaDeOrcamentos";
 import * as orcamento from "../../services/orcamentoDadosGeraisService";
-import MenuOrcamentos from "./menuOrcamentos";
+import HeaderListaDeOrcamentos from "./menuOrcamentos";
 import OrcamentoElaboracao from "./orcamentoElaboracao";
 
 const ListaDeOrcamentos = () => {
@@ -38,7 +38,7 @@ const ListaDeOrcamentos = () => {
 
   return (
     <React.Fragment>
-      <MenuOrcamentos addNovoOrcamento={addNovoOrcamento} />
+      <HeaderListaDeOrcamentos addNovoOrcamento={addNovoOrcamento} />
       {renderElaborarOrcamento()}
     </React.Fragment>
   );

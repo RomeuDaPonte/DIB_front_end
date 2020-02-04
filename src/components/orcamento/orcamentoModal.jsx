@@ -8,7 +8,7 @@ import { useModalToogle } from "../common/customHooks/useModalToogle";
 import { useForm } from "../common/customHooks/userForm";
 import * as entidade from "../../services/entidadeService";
 import * as user from "../../services/accountService";
-import * as orcamento from "../../services/orcamentoDadosGeraisService";
+import * as orcamentoDadosGerais from "../../services/orcamentoDadosGeraisService";
 import ModalTitle from "react-bootstrap/ModalTitle";
 
 const OrcamentoModal = props => {
@@ -90,11 +90,36 @@ const OrcamentoModal = props => {
   async function doSubmit(e) {
     if (!canSubmit(e)) return;
 
+    if (props.orcamento) {
+      editarOrcamento();
+      return;
+    }
+
     const { data } = currentFormState;
     try {
-      const { data: orcGuardado } = await orcamento.novo(data);
+      const { data: orcGuardado } = await orcamentoDadosGerais.novo(data);
       props.addNovoOrcamento(orcGuardado);
       toogleModal();
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        setFormValues({
+          ...currentFormState,
+          formError: ex.response.data
+        });
+      }
+    }
+  }
+
+  async function editarOrcamento() {
+    const { orcamento } = props;
+    const { data } = currentFormState;
+
+    try {
+      const { data: orcamentoEditado } = await orcamentoDadosGerais.editar(
+        orcamento._id,
+        data
+      );
+      console.log(orcamentoEditado);
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         setFormValues({
@@ -233,7 +258,7 @@ const OrcamentoModal = props => {
     if (!orcamento) {
       return <ModalTitle>Novo Orçamento</ModalTitle>;
     }
-    return <ModalTitle>Editar orçamento</ModalTitle>;
+    return <ModalTitle>Editar orçamento {orcamento.numero}</ModalTitle>;
   }
 
   return (

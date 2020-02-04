@@ -15,3 +15,7 @@ export async function novo(orcamento) {
 export async function getAll() {
   return await http.get(apiEndPoint + "/getall");
 }
+
+export async function editar(orcamentoId, orcamentoAEditar) {
+  return await http.put(apiEndPoint + "/" + orcamentoId, orcamentoAEditar);
+}
