@@ -4,7 +4,7 @@ import Sidbar from "./sidbar";
 import accountService from "../services/accountService";
 import Definicoes from "./definicoes/definicoes";
 import Entidade from "./entidade/entidade";
-import ListaDeOrcamentos from "./orcamento/listaDeOrcamentos";
+import ListaDeOrcamentos from "./listaDeOrcamentos/listaDeOrcamentos";
 import OrcamentoElaboracao from "./orcamento/orcamentoElaboracao";
 
 const Landing = () => {
