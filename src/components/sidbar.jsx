@@ -20,16 +20,16 @@ const SideBar = props => {
       </center>
       <ul className="navigation_section">
         <li className="navigation_item">
-          <NavLink to="listaDeOrcamentos">Orçamentos</NavLink>
+          <NavLink to="/listaDeOrcamentos">Orçamentos</NavLink>
         </li>
         <li className="navigation_item">
           <NavLink to="">Obra</NavLink>
         </li>
         <li className="navigation_item">
-          <NavLink to="entidade">Entidades</NavLink>
+          <NavLink to="/entidade">Entidades</NavLink>
         </li>
         <li className="navigation_item sem-border">
-          <NavLink to="definicoes">Definições</NavLink>
+          <NavLink to="/definicoes">Definições</NavLink>
         </li>
       </ul>
       <center>

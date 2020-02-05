@@ -51,31 +51,18 @@ const OrcamentoModal = props => {
     schema
   });
 
-  function initializeData() {
-    const { orcamento } = props;
-    const currentUser = user.getCurrentUser();
-    if (!orcamento) {
-      return {
-        clienteId: "",
-        descritivo: "",
-        tecnicoResponsavel: "",
-        elaboradoPorId: currentUser._id
-      };
-    }
-    return {
-      clienteId: orcamento.cliente._id,
-      descritivo: orcamento.descritivo,
-      tecnicoResponsavel: orcamento.tecnicoResponsavel,
-      elaboradoPorId: orcamento.elaboradoPor._id
-    };
-  }
-
   useEffect(() => {
     (async function() {
       const { data: clientes } = await entidade.getAllClientes();
       const { data: users } = await user.getAllUsers();
       const currentUser = user.getCurrentUser();
-      const data = initializeData();
+      const data = {
+        clienteId: "",
+        descritivo: "",
+        tecnicoResponsavel: "",
+        elaboradoPorId: currentUser._id
+      };
+
       setFormValues({
         ...formState,
         listaDeClientes: clientes,
@@ -89,11 +76,6 @@ const OrcamentoModal = props => {
 
   async function doSubmit(e) {
     if (!canSubmit(e)) return;
-
-    if (props.orcamento) {
-      editarOrcamento();
-      return;
-    }
 
     const { data } = currentFormState;
     try {
@@ -110,39 +92,15 @@ const OrcamentoModal = props => {
     }
   }
 
-  async function editarOrcamento() {
-    const { orcamento } = props;
-    const { data } = currentFormState;
-
-    try {
-      const { data: orcamentoEditado } = await orcamentoDadosGerais.editar(
-        orcamento._id,
-        data
-      );
-      console.log(orcamentoEditado);
-    } catch (ex) {
-      if (ex.response && ex.response.status === 400) {
-        setFormValues({
-          ...currentFormState,
-          formError: ex.response.data
-        });
-      }
-    }
-  }
-
-  function renderNomoDoCliente() {
-    const { orcamento } = props;
-    if (orcamento) {
-      return (
-        <option value={orcamento.clienteId}>{orcamento.cliente.name}</option>
-      );
-    }
-    return <option value=""></option>;
-  }
-
   function renderForm() {
     if (currentFormState) {
-      const { data, listaDeClientes, errors } = currentFormState;
+      const {
+        currentUser,
+        listaDeUsers,
+        data,
+        listaDeClientes,
+        errors
+      } = currentFormState;
 
       return (
         <form onSubmit={doSubmit}>
@@ -154,7 +112,7 @@ const OrcamentoModal = props => {
               onChange={handleChange}
               className="form-control"
             >
-              {renderNomoDoCliente()}
+              <option value=""></option>
               {listaDeClientes.map(cliente => (
                 <option key={cliente._id} value={cliente._id}>
                   {cliente.name}
@@ -178,94 +136,53 @@ const OrcamentoModal = props => {
               handleChange,
               "Técnico responsavel"
             )}
-            {renderElaboradoPor()}
+            <label>Elaborado por</label>
+            <div className="form-group">
+              <select
+                name={"elaboradoPorId"}
+                value={data.elaboradoPorId}
+                onChange={handleChange}
+                className="form-control"
+              >
+                <option value={currentUser._id}>{currentUser.name}</option>
+                {listaDeUsers &&
+                  currentUser.role === "Administrador" &&
+                  listaDeUsers.map(user => (
+                    <option key={user._id} value={user._id}>
+                      {user.name}
+                    </option>
+                  ))}
+              </select>
+              {errors.elaboradoPorId && (
+                <div className="alert alert-danger">
+                  {errors.elaboradoPorId}
+                </div>
+              )}
+            </div>
           </div>
         </form>
       );
     }
   }
 
-  function renderElaboradoPor() {
-    const { currentUser, data, listaDeUsers, errors } = currentFormState;
-
-    return (
-      <React.Fragment>
-        <label>Elaborado por</label>
-        <div className="form-group">
-          <select
-            name={"elaboradoPorId"}
-            value={data.elaboradoPorId}
-            onChange={handleChange}
-            className="form-control"
-          >
-            <option value={currentUser._id}>{currentUser.name}</option>
-            {listaDeUsers &&
-              currentUser.role === "Administrador" &&
-              listaDeUsers.map(user => (
-                <option key={user._id} value={user._id}>
-                  {user.name}
-                </option>
-              ))}
-          </select>
-          {errors.elaboradoPorId && (
-            <div className="alert alert-danger">{errors.elaboradoPorId}</div>
-          )}
-        </div>
-      </React.Fragment>
-    );
-  }
-
-  function renderIcon() {
-    const { orcamento } = props;
-    if (!orcamento) {
-      return (
-        <React.Fragment>
-          <ReactTooltip
-            id="NovoOrcamento"
-            className="toolTipMd"
-            place="bottom"
-            delayHide={500}
-          />
-          <i
-            data-for="NovoOrcamento"
-            data-tip="Novo orçamento"
-            className="fa fa-paper-plane fa-5x btnClick"
-            onClick={toogleModal}
-          ></i>
-        </React.Fragment>
-      );
-    }
-    return (
-      <React.Fragment>
-        <ReactTooltip
-          id="EditarOrcamento"
-          className="toolTip"
-          place="top"
-          delayHide={500}
-        />
-        <i
-          data-tip="Editar orçamento"
-          data-for="EditarOrcamento"
-          className="fa fa-edit btnClick"
-          onClick={toogleModal}
-        ></i>
-      </React.Fragment>
-    );
-  }
-
-  function renderModalTitle() {
-    const { orcamento } = props;
-    if (!orcamento) {
-      return <ModalTitle>Novo Orçamento</ModalTitle>;
-    }
-    return <ModalTitle>Editar orçamento {orcamento.numero}</ModalTitle>;
-  }
-
   return (
     <React.Fragment>
-      {renderIcon()}
+      <ReactTooltip
+        id="NovoOrcamento"
+        className="toolTipMd"
+        place="bottom"
+        delayHide={500}
+      />
+      <i
+        data-for="NovoOrcamento"
+        data-tip="Novo orçamento"
+        className="fa fa-paper-plane fa-5x btnClick"
+        onClick={toogleModal}
+      ></i>
       <Modal show={currentModalState.show} onHide={toogleModal}>
-        <Modal.Header closeButton>{renderModalTitle()}</Modal.Header>
+        <Modal.Header closeButton>
+          <ModalTitle>Novo Orçamento</ModalTitle>
+        </Modal.Header>
         <Modal.Body>{renderForm()}</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={toogleModal}>

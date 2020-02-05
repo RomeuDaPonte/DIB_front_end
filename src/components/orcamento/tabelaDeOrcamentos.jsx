@@ -1,5 +1,5 @@
 import React from "react";
-import OrcamentoModal from "./orcamentoModal";
+import { Link } from "react-router-dom";
 
 const TabelaDeOrcamentos = props => {
   const { orcamentos } = props;
@@ -31,7 +31,7 @@ const TabelaDeOrcamentos = props => {
                   <td>{orc.data.toString().slice(0, 10)}</td>
                   <td>{orc.elaboradoPor.name}</td>
                   <td>
-                    <OrcamentoModal orcamento={orc} />
+                    <Link to={`/orcamento/${orc._id}`}>Editar</Link>
                   </td>
                 </tr>
               ))}

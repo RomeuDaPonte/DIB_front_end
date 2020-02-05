@@ -2,13 +2,11 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import TabelaDeOrcamentos from "./tabelaDeOrcamentos";
 import * as orcamento from "../../services/orcamentoDadosGeraisService";
-import HeaderListaDeOrcamentos from "./headerOrcamentos";
-import OrcamentoElaboracao from "./orcamentoElaboracao";
+import HeaderListaDeOrcamentos from "./headerListaDeOrcamentos";
 
-const ListaDeOrcamentos = () => {
+const ListaDeOrcamentos = props => {
   const state = {
-    orcamentos: [],
-    orcamentoAElaborar: {}
+    orcamentos: []
   };
 
   const [currentState, setOrcamentos] = useState(state);
@@ -18,28 +16,21 @@ const ListaDeOrcamentos = () => {
       const { data: orcamentos } = await orcamento.getAll();
       setOrcamentos({ ...currentState, orcamentos });
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function addNovoOrcamento(novoOrcamento) {
-    setOrcamentos({ orcamentoAElaborar: novoOrcamento });
+    props.history.push("/orcamento/" + novoOrcamento._id);
 
     toast.success("Orçamento criado com sucesso!", {
       position: toast.POSITION.BOTTOM_RIGHT
     });
   }
 
-  function renderElaborarOrcamento() {
-    const { orcamentoAElaborar } = currentState;
-    if (Object.entries(orcamentoAElaborar).length === 0)
-      return <TabelaDeOrcamentos orcamentos={currentState.orcamentos} />;
-
-    return <OrcamentoElaboracao orcamento={currentState.orcamentoAElaborar} />;
-  }
-
   return (
     <React.Fragment>
       <HeaderListaDeOrcamentos addNovoOrcamento={addNovoOrcamento} />
-      {renderElaborarOrcamento()}
+      <TabelaDeOrcamentos orcamentos={currentState.orcamentos} />
     </React.Fragment>
   );
 };

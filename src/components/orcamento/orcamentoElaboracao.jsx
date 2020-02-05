@@ -1,12 +1,7 @@
 import React from "react";
 
 const OrcamentoElaboracao = props => {
-  const state = {
-    orcamento: {},
-    nomeDoComponente: null
-  };
-
-  return <div>Ola</div>;
+  return <div>Ola {props.match.params.id}</div>;
 };
 
 export default OrcamentoElaboracao;
