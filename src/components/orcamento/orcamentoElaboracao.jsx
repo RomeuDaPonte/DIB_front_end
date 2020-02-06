@@ -1,7 +1,12 @@
 import React from "react";
+import HeaderOrcamento from "./headerOrcamento";
 
 const OrcamentoElaboracao = props => {
-  return <div>Ola {props.match.params.id}</div>;
+  return (
+    <React.Fragment>
+      <HeaderOrcamento></HeaderOrcamento>;
+    </React.Fragment>
+  );
 };
 
 export default OrcamentoElaboracao;
