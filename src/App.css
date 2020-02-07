@@ -85,3 +85,8 @@ tbody {
 .toolTipMd {
   font-size: 1.5em;
 }
+
+.form-label {
+  font-size: 2em;
+  font-weight: bold;
+}
