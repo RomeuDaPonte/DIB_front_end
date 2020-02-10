@@ -19,3 +19,7 @@ export async function getAll() {
 export async function editar(orcamentoId, orcamentoAEditar) {
   return await http.put(apiEndPoint + "/" + orcamentoId, orcamentoAEditar);
 }
+
+export async function get(orcamentoId) {
+  return await http.get(apiEndPoint + "/" + orcamentoId);
+}

@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
+import { OrcamentoContext } from "../../contexts/orcamentoContext";
 
 const DadosGeraisOrcamento = () => {
+  const orcamento = useContext(OrcamentoContext);
+  console.log(orcamento);
+
   return (
     <div className="card m-2">
       <h4 className="card-header text-white bg-dark">
@@ -9,9 +13,7 @@ const DadosGeraisOrcamento = () => {
       <div className="card-body">
         <div className="row">
           <div className="col">
-            <label className="form-label" for="exampleInputEmail1">
-              Cliente
-            </label>
+            <label className="form-label">Cliente</label>
             <input
               type="text"
               name="email"
@@ -19,9 +21,7 @@ const DadosGeraisOrcamento = () => {
             />
           </div>
           <div className="col-5">
-            <label className="form-label" for="exampleInputEmail1">
-              Descritivo
-            </label>
+            <label className="form-label">Descritivo</label>
             <input
               type="text"
               name="email"
@@ -29,9 +29,7 @@ const DadosGeraisOrcamento = () => {
             />
           </div>
           <div className="col">
-            <label className="form-label" for="exampleInputEmail1">
-              Técnico responsavel
-            </label>
+            <label className="form-label">Técnico responsavel</label>
             <input
               type="text"
               name="email"
@@ -39,9 +37,7 @@ const DadosGeraisOrcamento = () => {
             />
           </div>
           <div className="col">
-            <label className="form-label" for="exampleInputEmail1">
-              Modo de pagamento
-            </label>
+            <label className="form-label">Modo de pagamento</label>
             <input
               type="text"
               name="email"
@@ -51,9 +47,7 @@ const DadosGeraisOrcamento = () => {
         </div>
         <div className="row">
           <div className="col">
-            <label className="form-label" for="exampleInputEmail1">
-              Prazo/Dias necessários
-            </label>
+            <label className="form-label">Prazo/Dias necessários</label>
             <input
               type="text"
               name="email"
@@ -61,9 +55,7 @@ const DadosGeraisOrcamento = () => {
             />
           </div>
           <div className="col">
-            <label className="form-label" for="exampleInputEmail1">
-              Orçamento elaborado por
-            </label>
+            <label className="form-label">Orçamento elaborado por</label>
             <input
               type="text"
               name="email"
@@ -71,9 +63,7 @@ const DadosGeraisOrcamento = () => {
             />
           </div>
           <div className="col">
-            <label className="form-label" for="exampleInputEmail1">
-              Margem
-            </label>
+            <label className="form-label">Margem</label>
             <input
               type="text"
               name="email"
@@ -81,9 +71,7 @@ const DadosGeraisOrcamento = () => {
             />
           </div>
           <div className="col">
-            <label className="form-label" for="exampleInputEmail1">
-              Total com margem
-            </label>
+            <label className="form-label">Total com margem</label>
             <input
               type="text"
               name="email"
