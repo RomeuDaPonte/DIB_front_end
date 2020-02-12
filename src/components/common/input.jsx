@@ -1,6 +1,14 @@
 import React from "react";
 
-const Input = ({ type, value, onChange, name, placeholder, error }) => {
+const Input = ({
+  type,
+  value,
+  onChange,
+  name,
+  placeholder,
+  error,
+  classNameExtra
+}) => {
   return (
     <div className="form-group">
       <input
@@ -8,7 +16,7 @@ const Input = ({ type, value, onChange, name, placeholder, error }) => {
         onChange={onChange}
         type={type}
         name={name}
-        className="form-control"
+        className={`form-control ${classNameExtra}`}
         placeholder={placeholder}
       />
       {error && <div className="alert alert-danger">{error}</div>}
