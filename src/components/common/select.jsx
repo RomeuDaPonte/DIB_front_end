@@ -1,7 +1,14 @@
 import React from "react";
 
 //...rest get the other properties from the props obj
-const Select = ({ name, list, error, defaultSelectedId, classNameExtra }) => {
+const Select = ({
+  name,
+  list,
+  handleChange,
+  error,
+  defaultSelectedId,
+  classNameExtra
+}) => {
   function renderDefaultOption() {
     if (defaultSelectedId) {
       const defaulObject = list.find(i => i._id === defaultSelectedId);
@@ -15,6 +22,7 @@ const Select = ({ name, list, error, defaultSelectedId, classNameExtra }) => {
       <select
         name={name}
         id={name}
+        onChange={handleChange}
         className={`form-control ${classNameExtra}`}
       >
         {renderDefaultOption()}

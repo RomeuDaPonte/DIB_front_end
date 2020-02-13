@@ -109,8 +109,12 @@ const DadosGeraisOrcamento = () => {
           clienteId: orcamento.cliente._id,
           descritivo: orcamento.descritivo,
           tecnicoResponsavel: orcamento.tecnicoResponsavel,
-          elaboradoPorId: currentUser._id,
-          condicoesDePagamento: cliente.condicoesDePagamento,
+          elaboradoPorId: orcamento.elaboradoPorId
+            ? orcamento.elaboradoPorId
+            : currentUser._id,
+          condicoesDePagamento: orcamento.condicoesDePagamento
+            ? orcamento.condicoesDePagamento
+            : cliente.condicoesDePagamento,
           diasParaCompletarObra: 1,
           margem: 30,
           totalComMargem: 1000
@@ -120,6 +124,17 @@ const DadosGeraisOrcamento = () => {
       }
     })();
   }, [orcamento, currentUser, setFormValues, clientes]);
+
+  function handleClientChange({ currentTarget: input }) {
+    const { data, errors } = currentFormState;
+    const clienteSelecionado = clientes.find(c => c._id === input.value);
+    data[input.name] = input.value;
+    data.condicoesDePagamento = clienteSelecionado.condicoesDePagamento;
+    setFormValues({
+      data,
+      errors
+    });
+  }
 
   function renderForm() {
     if (currentFormState && condicoesDePagamento) {
@@ -131,6 +146,7 @@ const DadosGeraisOrcamento = () => {
               {renderSelect(
                 "clienteId",
                 clientes,
+                handleClientChange,
                 currentFormState.errors.clienteId,
                 currentFormState.data.clienteId,
                 "form-control-lg"
@@ -198,6 +214,7 @@ const DadosGeraisOrcamento = () => {
               {renderSelect(
                 "elaboradoPorId",
                 users,
+                handleChange,
                 currentFormState.errors.elaboradoPorId,
                 currentFormState.data.elaboradoPorId,
                 "form-control-lg"

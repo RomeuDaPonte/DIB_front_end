@@ -26,6 +26,7 @@ export function renderInput(
 export function renderSelect(
   name,
   list,
+  handleChange,
   error,
   defaultSelectedId = "",
   classNameExtra = ""
@@ -34,6 +35,7 @@ export function renderSelect(
     <Select
       name={name}
       list={list}
+      handleChange={handleChange}
       error={error}
       defaultSelectedId={defaultSelectedId}
       classNameExtra={classNameExtra}
