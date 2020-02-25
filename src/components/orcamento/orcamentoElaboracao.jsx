@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import HeaderOrcamento from "./headerOrcamento";
 import DadosGeraisOrcamento from "./dadosGeraisOrcamentos";
+import ListaDeTarefas from "./listaDeTarefas";
 import { OrcamentoContext } from "../../contexts/orcamentoContext";
-import * as user from "../../services/accountService";
 import * as orcamentoService from "../../services/orcamentoDadosGeraisService";
 
 const OrcamentoElaboracao = props => {
@@ -30,6 +30,7 @@ const OrcamentoElaboracao = props => {
       <OrcamentoContext.Provider value={{ orcamentoState, setOrcamento }}>
         <HeaderOrcamento></HeaderOrcamento>
         <DadosGeraisOrcamento></DadosGeraisOrcamento>
+        <ListaDeTarefas></ListaDeTarefas>
       </OrcamentoContext.Provider>
     </>
   );
