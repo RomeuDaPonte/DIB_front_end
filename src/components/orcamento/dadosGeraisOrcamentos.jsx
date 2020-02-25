@@ -8,7 +8,7 @@ import * as orcamentoService from "../../services/orcamentoDadosGeraisService";
 import { renderInput, renderSelect } from "../common/formInputs";
 
 const DadosGeraisOrcamento = () => {
-  const orcamentoPage = useContext(OrcamentoContext);
+  const { orcamentoState, setOrcamento } = useContext(OrcamentoContext);
 
   const [condicoesDePagamento, setCondicoesDePagamento] = useState({
     arrayDeCondicoesDePagamento: []
@@ -46,15 +46,15 @@ const DadosGeraisOrcamento = () => {
     })();
   }, []);
 
-  const [orcamento, setOrcamento] = useState({ orcamento: {} });
-  useEffect(() => {
-    (async function() {
-      const { data: orcamento } = await orcamentoService.get(
-        orcamentoPage.currentPageState.orcamentoId
-      );
-      setOrcamento(orcamento);
-    })();
-  }, [orcamentoPage.currentPageState.orcamentoId]);
+  // const [orcamento, setOrcamento] = useState({ orcamento: {} });
+  // useEffect(() => {
+  //   (async function() {
+  //     const { data: orcamento } = await orcamentoService.get(
+  //       orcamentoPage.currentPageState.orcamentoId
+  //     );
+  //     setOrcamento(orcamento);
+  //   })();
+  // }, [orcamentoPage.currentPageState.orcamentoId]);
 
   const formState = {
     data: {
@@ -63,9 +63,9 @@ const DadosGeraisOrcamento = () => {
       tecnicoResponsavel: "",
       elaboradoPorId: "",
       condicoesDePagamento: "",
-      diasParaCompletarObra: "",
+      diasNecessariosParaRealizarObra: "",
       margem: "",
-      totalComMargem: ""
+      totalFinal: ""
     },
     errors: {}
   };
@@ -86,14 +86,14 @@ const DadosGeraisOrcamento = () => {
     modoDePagamento: Joi.string()
       .required()
       .label("Modo de pagamento"),
-    diasParaCompletarObra: Joi.number()
+    diasNecessariosParaRealizarObra: Joi.number()
       .integer()
       .min(1)
       .label("Dias para completar"),
     margem: Joi.number()
       .integer()
       .min(1),
-    totalComMargem: Joi.any()
+    totalFinal: Joi.any()
   };
 
   const [currentFormState, handleChange, canSubmit, setFormValues] = useForm({
@@ -103,27 +103,28 @@ const DadosGeraisOrcamento = () => {
 
   useEffect(() => {
     (async function() {
+      const { orcamento } = orcamentoState;
       if (orcamento.cliente && clientes) {
         const cliente = clientes.find(cli => cli._id === orcamento.cliente._id);
         const data = {
           clienteId: orcamento.cliente._id,
           descritivo: orcamento.descritivo,
           tecnicoResponsavel: orcamento.tecnicoResponsavel,
-          elaboradoPorId: orcamento.elaboradoPorId
-            ? orcamento.elaboradoPorId
-            : currentUser._id,
+          elaboradoPorId: orcamento.elaboradoPor._id,
           condicoesDePagamento: orcamento.condicoesDePagamento
             ? orcamento.condicoesDePagamento
             : cliente.condicoesDePagamento,
-          diasParaCompletarObra: 1,
-          margem: 30,
-          totalComMargem: 1000
+          diasNecessariosParaRealizarObra: orcamento.diasNecessariosParaRealizarObra
+            ? orcamento.diasNecessariosParaRealizarObra
+            : 0,
+          margem: orcamento.margem ? orcamento.margem : 30,
+          totalFinal: orcamento.totalFinal ? orcamento.totalFinal : 0
         };
         const errors = {};
         setFormValues({ data, errors });
       }
     })();
-  }, [orcamento, currentUser, setFormValues, clientes]);
+  }, [orcamentoState.orcamento, currentUser, setFormValues, clientes]);
 
   function handleClientChange({ currentTarget: input }) {
     const { data, errors } = currentFormState;
@@ -136,10 +137,24 @@ const DadosGeraisOrcamento = () => {
     });
   }
 
+  async function submitForm() {
+    const { orcamento } = orcamentoState;
+    try {
+      await orcamentoService.editar(orcamento._id, currentFormState.data);
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        setFormValues({
+          ...currentFormState,
+          formError: ex.response.data
+        });
+      }
+    }
+  }
+
   function renderForm() {
     if (currentFormState && condicoesDePagamento) {
       return (
-        <>
+        <form onBlur={submitForm}>
           <div className="row">
             <div className="col">
               <label className="form-label">Cliente</label>
@@ -202,7 +217,7 @@ const DadosGeraisOrcamento = () => {
               <label className="form-label">Prazo/Dias necessários</label>
               {renderInput(
                 currentFormState,
-                "diasParaCompletarObra",
+                "diasNecessariosParaRealizarObra",
                 handleChange,
                 "",
                 "number",
@@ -234,11 +249,11 @@ const DadosGeraisOrcamento = () => {
             <div className="col">
               <label className="form-label">Total com margem</label>
               <label className="form-control form-control-lg">
-                {currentFormState.data.totalComMargem} €
+                {currentFormState.data.totalFinal} €
               </label>
             </div>
           </div>{" "}
-        </>
+        </form>
       );
     }
   }

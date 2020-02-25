@@ -1,18 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import HeaderOrcamento from "./headerOrcamento";
 import DadosGeraisOrcamento from "./dadosGeraisOrcamentos";
 import { OrcamentoContext } from "../../contexts/orcamentoContext";
+import * as user from "../../services/accountService";
+import * as orcamentoService from "../../services/orcamentoDadosGeraisService";
 
 const OrcamentoElaboracao = props => {
   const state = {
     mostraListaDeTarefas: true,
-    orcamentoId: props.match.params.id
+    orcamento: {}
   };
-  const [currentPageState, setPageState] = useState(state);
+
+  const [orcamentoState, setOrcamento] = useState(state);
+
+  useEffect(() => {
+    (async function() {
+      const { data: orcamento } = await orcamentoService.get(
+        props.match.params.id
+      );
+      setOrcamento({
+        ...orcamentoState,
+        orcamento
+      });
+    })();
+  }, [props]);
 
   return (
     <>
-      <OrcamentoContext.Provider value={{ currentPageState, setPageState }}>
+      <OrcamentoContext.Provider value={{ orcamentoState, setOrcamento }}>
         <HeaderOrcamento></HeaderOrcamento>
         <DadosGeraisOrcamento></DadosGeraisOrcamento>
       </OrcamentoContext.Provider>
