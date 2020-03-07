@@ -4,6 +4,7 @@ import DadosGeraisOrcamento from "./dadosGeraisOrcamentos";
 import ListaDeTarefas from "./listaDeTarefas";
 import { OrcamentoContext } from "../../contexts/orcamentoContext";
 import * as orcamentoService from "../../services/orcamentoDadosGeraisService";
+import { getPrecos } from "../../services/precosService";
 
 const OrcamentoElaboracao = props => {
   const state = {
@@ -12,7 +13,6 @@ const OrcamentoElaboracao = props => {
   };
 
   const [orcamentoState, setOrcamento] = useState(state);
-
   useEffect(() => {
     (async function() {
       const { data: orcamento } = await orcamentoService.get(
@@ -25,9 +25,27 @@ const OrcamentoElaboracao = props => {
     })();
   }, [props]);
 
+  const precosIniciais = {
+    automacao: "",
+    consultoria: "",
+    desenvolvimento: "",
+    maquinacao: "",
+    montagem: ""
+  };
+  const [precos, setPrecos] = useState(precosIniciais);
+
+  useEffect(() => {
+    (async function() {
+      const { data: precos } = await getPrecos();
+      setPrecos(precos);
+    })();
+  }, []);
+
   return (
     <>
-      <OrcamentoContext.Provider value={{ orcamentoState, setOrcamento }}>
+      <OrcamentoContext.Provider
+        value={{ orcamentoState, setOrcamento, precos }}
+      >
         <HeaderOrcamento></HeaderOrcamento>
         <DadosGeraisOrcamento></DadosGeraisOrcamento>
         <ListaDeTarefas></ListaDeTarefas>

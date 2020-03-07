@@ -1,62 +1,129 @@
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
+import CabecalhoListaDeTarefas from "./cabecalhoListaDeTarefas";
+import { OrcamentoContext } from "../../contexts/orcamentoContext";
+import { useForm } from "../common/customHooks/userForm";
+import { renderInput, renderSelect } from "../common/formInputs";
+import tarefaSchema from "../../schemas/tarefaSchema";
 
 const ListaDeTarefas = () => {
+  const { precos } = useContext(OrcamentoContext);
+
+  const [tarefas, setNomesDasTarefas] = useState({
+    nomes: []
+  });
+  useEffect(() => {
+    (async function() {
+      const nomesDasTarefas = [...Object.keys(precos)];
+      setNomesDasTarefas({ nomes: nomesDasTarefas });
+    })();
+  }, [precos]);
+
+  const formState = {
+    data: {
+      tarefa: "",
+      descricao: "",
+      quantidade: "",
+      custoUnitario: "0",
+      total: "0"
+    },
+    errors: {}
+  };
+  const { schema } = tarefaSchema;
+  const [currentFormState, handleChange, canSubmit, setFormValues] = useForm({
+    formState,
+    schema
+  });
+  useEffect(() => {
+    (function() {
+      const { data, errors } = formState;
+
+      setFormValues({ data, errors });
+    })();
+  }, [setFormValues]);
+
+  function onTarefaChange(e) {
+    console.log(e.target.value);
+  }
+
+  function canRenderTarefaRow() {
+    if (currentFormState && tarefas.nomes.length > 0) return true;
+    return false;
+  }
+
   return (
     <div className="card m-2">
       <h4 className="card-header text-white bg-dark">Lista de tarefas</h4>
       <div className="card-body">
         <div className="row">
-          <div className="col">
-            <label className="form-label">Tipo de tarefa</label>
-          </div>
-          <div className="col-md-4">
-            <label className="form-label">Descritivo</label>
-          </div>
-          <div className="col">
-            <label className="form-label">P/Unitário</label>
-          </div>
-          <div className="col">
-            <label className="form-label">Quantidade</label>
-          </div>
-          <div className="col">
-            <label className="form-label">Total</label>
-          </div>
-          <div className="col">
-            <label className="form-label">Opções</label>
-          </div>
+          <CabecalhoListaDeTarefas />
         </div>
-        <div className="row">
-          <div className="col">
-            <div className="form-group">
-              <input className="form-control form-control-lg" type="text" />
+        {!canRenderTarefaRow() && <h3>Loding...</h3>}
+        {canRenderTarefaRow() && (
+          <div className="row">
+            <div className="col">
+              <select
+                name="tarefa"
+                id="tarefa"
+                className="form-control form-control-lg"
+                onChange={onTarefaChange}
+              >
+                <option></option>
+                {tarefas.nomes.map(n => (
+                  <option key={n} value={n}>
+                    {n}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="col-md-5">
+              {renderInput(
+                currentFormState,
+                "descricao",
+                handleChange,
+                "",
+                "",
+                "form-control-lg"
+              )}
+            </div>
+            <div className="col-md-1">
+              {renderInput(
+                currentFormState,
+                "quantidade",
+                handleChange,
+                "",
+                "",
+                "form-control-lg"
+              )}
+            </div>
+            <div className="col-md-1">
+              <div className="form-group">
+                <input
+                  className="form-control form-control-lg"
+                  type="text"
+                  readOnly="readOnly"
+                  value={currentFormState.data.custoUnitario}
+                />
+              </div>
+            </div>
+            <div className="col-md-1">
+              <div className="form-group">
+                <input
+                  className="form-control form-control-lg"
+                  type="text"
+                  readOnly="readOnly"
+                  value={currentFormState.data.total}
+                />
+              </div>
+            </div>
+            <div className="col-md-2">
+              <i
+                style={{ color: "green" }}
+                className="fa fa-arrow-circle-down fa-3x"
+                aria-hidden="true"
+              ></i>
             </div>
           </div>
-          <div className="col-md-4">
-            <div className="form-group">
-              <input className="form-control form-control-lg" type="text" />
-            </div>
-          </div>
-          <div className="col">
-            <div className="form-group">
-              <input className="form-control form-control-lg" type="text" />
-            </div>
-          </div>
-          <div className="col">
-            <div className="form-group">
-              <input className="form-control form-control-lg" type="text" />
-            </div>
-          </div>
-          <div className="col">
-            <div className="form-group">
-              <input className="form-control form-control-lg" type="text" />
-            </div>
-          </div>
-          <div className="col">
-            <div className="form-group">
-              <input className="form-control form-control-lg" type="text" />
-            </div>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

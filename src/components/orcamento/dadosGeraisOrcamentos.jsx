@@ -8,7 +8,7 @@ import * as orcamentoService from "../../services/orcamentoDadosGeraisService";
 import { renderInput, renderSelect } from "../common/formInputs";
 
 const DadosGeraisOrcamento = () => {
-  const { orcamentoState, setOrcamento } = useContext(OrcamentoContext);
+  const { orcamentoState, setOrcamento, precos } = useContext(OrcamentoContext);
 
   const [condicoesDePagamento, setCondicoesDePagamento] = useState({
     arrayDeCondicoesDePagamento: []
@@ -45,16 +45,6 @@ const DadosGeraisOrcamento = () => {
       setClientes(clientesDaBd);
     })();
   }, []);
-
-  // const [orcamento, setOrcamento] = useState({ orcamento: {} });
-  // useEffect(() => {
-  //   (async function() {
-  //     const { data: orcamento } = await orcamentoService.get(
-  //       orcamentoPage.currentPageState.orcamentoId
-  //     );
-  //     setOrcamento(orcamento);
-  //   })();
-  // }, [orcamentoPage.currentPageState.orcamentoId]);
 
   const formState = {
     data: {
@@ -117,7 +107,7 @@ const DadosGeraisOrcamento = () => {
           diasNecessariosParaRealizarObra: orcamento.diasNecessariosParaRealizarObra
             ? orcamento.diasNecessariosParaRealizarObra
             : 0,
-          margem: orcamento.margem ? orcamento.margem : 30,
+          margem: orcamento.margem ? orcamento.margem : precos.margem,
           totalFinal: orcamento.totalFinal ? orcamento.totalFinal : 0
         };
         const errors = {};
@@ -269,9 +259,3 @@ const DadosGeraisOrcamento = () => {
 };
 
 export default DadosGeraisOrcamento;
-
-// return (
-//   <div>
-//     Ola {currentFormState && <h1>{currentFormState.data.descritivo}</h1>}
-//   </div>
-// );
