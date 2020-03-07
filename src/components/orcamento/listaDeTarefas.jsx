@@ -13,6 +13,8 @@ const ListaDeTarefas = () => {
   });
   useEffect(() => {
     (async function() {
+      delete precos.margem;
+
       const nomesDasTarefas = [...Object.keys(precos)];
       setNomesDasTarefas({ nomes: nomesDasTarefas });
     })();
@@ -42,7 +44,14 @@ const ListaDeTarefas = () => {
   }, [setFormValues]);
 
   function onTarefaChange(e) {
-    console.log(e.target.value);
+    const { data: tarefa } = currentFormState;
+    if (e.target.value) tarefa.custoUnitario = precos[e.target.value];
+    else tarefa.custoUnitario = "0";
+
+    setFormValues({
+      ...currentFormState,
+      data: tarefa
+    });
   }
 
   function canRenderTarefaRow() {
