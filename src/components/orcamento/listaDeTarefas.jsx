@@ -4,21 +4,23 @@ import { OrcamentoContext } from "../../contexts/orcamentoContext";
 import { useForm } from "../common/customHooks/userForm";
 import { renderInput, renderSelect } from "../common/formInputs";
 import tarefaSchema from "../../schemas/tarefaSchema";
+import useListaDeTarefasState from "../common/custmoStates/listaDeTarefasState";
 
 const ListaDeTarefas = () => {
   const { precos } = useContext(OrcamentoContext);
 
-  const [tarefas, setNomesDasTarefas] = useState({
-    nomes: []
-  });
-  useEffect(() => {
-    (async function() {
-      delete precos.margem;
+  const tarefas = useListaDeTarefasState(precos);
+  // const [tarefas, setNomesDasTarefas] = useState({
+  //   nomes: []
+  // });
+  // useEffect(() => {
+  //   (async function() {
+  //     delete precos.margem;
 
-      const nomesDasTarefas = [...Object.keys(precos)];
-      setNomesDasTarefas({ nomes: nomesDasTarefas });
-    })();
-  }, [precos]);
+  //     const nomesDasTarefas = [...Object.keys(precos)];
+  //     setNomesDasTarefas({ nomes: nomesDasTarefas });
+  //   })();
+  // }, [precos]);
 
   const formState = {
     data: {
