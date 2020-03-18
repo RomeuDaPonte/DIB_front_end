@@ -7,11 +7,6 @@ import * as orcamentoService from "../../services/orcamentoDadosGeraisService";
 import { getPrecos } from "../../services/precosService";
 
 const OrcamentoElaboracao = props => {
-  // const state = {
-  //   mostraListaDeTarefas: true,
-  //   orcamento: {}
-  // };
-
   const [orcamentoState, setOrcamento] = useState({});
   useEffect(() => {
     (async function() {

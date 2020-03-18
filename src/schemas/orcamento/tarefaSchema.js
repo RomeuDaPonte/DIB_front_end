@@ -3,7 +3,7 @@ import Joi from "joi-browser";
 const tarefaSchema = {
   tarefa: Joi.string()
     .required()
-    .label("Tarefa"),
+    .label("Tipo de tarefa"),
   descricao: Joi.string()
     .required()
     .label("Descritivo"),

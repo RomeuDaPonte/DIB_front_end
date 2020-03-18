@@ -5,9 +5,10 @@ import { useForm } from "../common/customHooks/userForm";
 import { renderInput } from "../common/formInputs";
 import tarefaSchema from "../../schemas/orcamento/tarefaSchema";
 import useListaDeNomesDeTarefas from "./custmoStates/listaDeTarefasState";
+import * as tarefaService from "../../services/tarefa";
 
 const ListaDeTarefas = () => {
-  const { precos } = useContext(OrcamentoContext);
+  const { orcamentoState, precos } = useContext(OrcamentoContext);
   delete precos.margem;
 
   const tiposDeTarefa = useListaDeNomesDeTarefas(precos);
@@ -18,11 +19,12 @@ const ListaDeTarefas = () => {
     formState,
     schema
   });
+
   useEffect(() => {
     (function() {
       const formState = {
         data: {
-          tarefa: "",
+          tipoDeTarefa: "",
           descricao: "",
           quantidade: "",
           custoUnitario: "0",
@@ -35,8 +37,9 @@ const ListaDeTarefas = () => {
     })();
   }, [setFormValues]);
 
-  function onTarefaChange(e) {
+  function onTipoDeTarefaChange(e) {
     const { data: tarefa } = currentFormState;
+    tarefa.tipoDeTarefa = e.target.value;
     if (e.target.value) tarefa.custoUnitario = precos[e.target.value];
     else tarefa.custoUnitario = "0";
 
@@ -44,6 +47,27 @@ const ListaDeTarefas = () => {
       ...currentFormState,
       data: tarefa
     });
+  }
+
+  function handleTarefaChange() {
+    const { data: tarefa } = currentFormState;
+    tarefa.total = tarefa.quantidade * tarefa.custoUnitario;
+
+    setFormValues({
+      data: tarefa,
+      ...currentFormState
+    });
+  }
+
+  async function submit() {
+    const tarefa = currentFormState.data;
+    if (canSubmit) {
+      const tarefaGuardada = await tarefaService.nova(
+        orcamentoState.orcamento._id,
+        tarefa
+      );
+      console.log(tarefaGuardada);
+    }
   }
 
   function canRenderTarefaRow() {
@@ -60,13 +84,13 @@ const ListaDeTarefas = () => {
         </div>
         {!canRenderTarefaRow() && <h3>Loding...</h3>}
         {canRenderTarefaRow() && (
-          <div className="row">
+          <div onChange={handleTarefaChange} className="row">
             <div className="col">
               <select
-                name="tarefa"
-                id="tarefa"
+                name="tipoDeTarefa"
+                id="tipoDeTarefa"
                 className="form-control form-control-lg"
-                onChange={onTarefaChange}
+                onChange={onTipoDeTarefaChange}
               >
                 <option></option>
                 {tiposDeTarefa.nomes.map(n => (
@@ -118,8 +142,9 @@ const ListaDeTarefas = () => {
             </div>
             <div className="col-md-2">
               <i
+                onClick={submit}
                 style={{ color: "green" }}
-                className="fa fa-arrow-circle-down fa-3x"
+                className="fa fa-arrow-circle-down fa-3x btnClick"
                 aria-hidden="true"
               ></i>
             </div>
