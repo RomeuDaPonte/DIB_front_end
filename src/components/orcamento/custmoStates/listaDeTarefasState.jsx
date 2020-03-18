@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
-export default function useListaDeTarefasState(precos) {
+export default function useListaDeNomesDeTarefas(precos) {
   const [tarefas, setNomesDasTarefas] = useState({
     nomes: []
   });
   useEffect(() => {
-    (async function() {
+    (function() {
       const nomesDasTarefas = [...Object.keys(precos)];
       setNomesDasTarefas({ nomes: nomesDasTarefas });
     })();

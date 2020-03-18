@@ -1,37 +1,18 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import CabecalhoListaDeTarefas from "./cabecalhoListaDeTarefas";
 import { OrcamentoContext } from "../../contexts/orcamentoContext";
 import { useForm } from "../common/customHooks/userForm";
-import { renderInput, renderSelect } from "../common/formInputs";
-import tarefaSchema from "../../schemas/tarefaSchema";
-import useListaDeTarefasState from "../common/custmoStates/listaDeTarefasState";
+import { renderInput } from "../common/formInputs";
+import tarefaSchema from "../../schemas/orcamento/tarefaSchema";
+import useListaDeNomesDeTarefas from "./custmoStates/listaDeTarefasState";
 
 const ListaDeTarefas = () => {
   const { precos } = useContext(OrcamentoContext);
+  delete precos.margem;
 
-  const tarefas = useListaDeTarefasState(precos);
-  // const [tarefas, setNomesDasTarefas] = useState({
-  //   nomes: []
-  // });
-  // useEffect(() => {
-  //   (async function() {
-  //     delete precos.margem;
+  const tiposDeTarefa = useListaDeNomesDeTarefas(precos);
 
-  //     const nomesDasTarefas = [...Object.keys(precos)];
-  //     setNomesDasTarefas({ nomes: nomesDasTarefas });
-  //   })();
-  // }, [precos]);
-
-  const formState = {
-    data: {
-      tarefa: "",
-      descricao: "",
-      quantidade: "",
-      custoUnitario: "0",
-      total: "0"
-    },
-    errors: {}
-  };
+  const formState = {};
   const { schema } = tarefaSchema;
   const [currentFormState, handleChange, canSubmit, setFormValues] = useForm({
     formState,
@@ -39,8 +20,17 @@ const ListaDeTarefas = () => {
   });
   useEffect(() => {
     (function() {
+      const formState = {
+        data: {
+          tarefa: "",
+          descricao: "",
+          quantidade: "",
+          custoUnitario: "0",
+          total: "0"
+        },
+        errors: {}
+      };
       const { data, errors } = formState;
-
       setFormValues({ data, errors });
     })();
   }, [setFormValues]);
@@ -57,7 +47,7 @@ const ListaDeTarefas = () => {
   }
 
   function canRenderTarefaRow() {
-    if (currentFormState && tarefas.nomes.length > 0) return true;
+    if (currentFormState && tiposDeTarefa.nomes.length > 0) return true;
     return false;
   }
 
@@ -79,7 +69,7 @@ const ListaDeTarefas = () => {
                 onChange={onTarefaChange}
               >
                 <option></option>
-                {tarefas.nomes.map(n => (
+                {tiposDeTarefa.nomes.map(n => (
                   <option key={n} value={n}>
                     {n}
                   </option>

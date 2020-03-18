@@ -8,7 +8,7 @@ import * as orcamentoService from "../../services/orcamentoDadosGeraisService";
 import { renderInput, renderSelect } from "../common/formInputs";
 
 const DadosGeraisOrcamento = () => {
-  const { orcamentoState, setOrcamento, precos } = useContext(OrcamentoContext);
+  const { orcamentoState, precos } = useContext(OrcamentoContext);
 
   const [condicoesDePagamento, setCondicoesDePagamento] = useState({
     arrayDeCondicoesDePagamento: []
@@ -86,7 +86,7 @@ const DadosGeraisOrcamento = () => {
     totalFinal: Joi.any()
   };
 
-  const [currentFormState, handleChange, canSubmit, setFormValues] = useForm({
+  const [currentFormState, handleChange, , setFormValues] = useForm({
     formState,
     schema
   });
@@ -94,7 +94,7 @@ const DadosGeraisOrcamento = () => {
   useEffect(() => {
     (async function() {
       const { orcamento } = orcamentoState;
-      if (orcamento.cliente && clientes) {
+      if (orcamento && clientes) {
         const cliente = clientes.find(cli => cli._id === orcamento.cliente._id);
         const data = {
           clienteId: orcamento.cliente._id,
@@ -114,7 +114,7 @@ const DadosGeraisOrcamento = () => {
         setFormValues({ data, errors });
       }
     })();
-  }, [orcamentoState.orcamento, currentUser, setFormValues, clientes]);
+  }, [currentUser, setFormValues, clientes, orcamentoState, precos.margem]);
 
   function handleClientChange({ currentTarget: input }) {
     const { data, errors } = currentFormState;

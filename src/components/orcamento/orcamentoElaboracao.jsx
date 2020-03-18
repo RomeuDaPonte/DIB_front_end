@@ -7,19 +7,19 @@ import * as orcamentoService from "../../services/orcamentoDadosGeraisService";
 import { getPrecos } from "../../services/precosService";
 
 const OrcamentoElaboracao = props => {
-  const state = {
-    mostraListaDeTarefas: true,
-    orcamento: {}
-  };
+  // const state = {
+  //   mostraListaDeTarefas: true,
+  //   orcamento: {}
+  // };
 
-  const [orcamentoState, setOrcamento] = useState(state);
+  const [orcamentoState, setOrcamento] = useState({});
   useEffect(() => {
     (async function() {
       const { data: orcamento } = await orcamentoService.get(
         props.match.params.id
       );
       setOrcamento({
-        ...orcamentoState,
+        mostaListaDeTarefas: true,
         orcamento
       });
     })();
