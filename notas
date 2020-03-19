@@ -2,6 +2,5 @@ para importar react é: imrc
 para criar class: cc
 para stateless functional component: sfc
 comando: mongod serve para iniciar a base de dados
-comando para criar rapidamente a função componentDidMount: cmd
 f2 serve para selecionar todas as instancias de uma variavel
 ctrl + d serve para selecionar individualmente as instancias que tenham o mesmo nome
