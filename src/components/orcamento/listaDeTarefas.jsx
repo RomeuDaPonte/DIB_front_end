@@ -1,4 +1,5 @@
 import React, { useEffect, useContext } from "react";
+import { toast } from "react-toastify";
 import CabecalhoListaDeTarefas from "./cabecalhoListaDeTarefas";
 import { OrcamentoContext } from "../../contexts/orcamentoContext";
 import { useForm } from "../common/customHooks/userForm";
@@ -62,11 +63,17 @@ const ListaDeTarefas = () => {
   async function submit() {
     const tarefa = currentFormState.data;
     if (canSubmit) {
-      const tarefaGuardada = await tarefaService.nova(
-        orcamentoState.orcamento._id,
-        tarefa
-      );
-      console.log(tarefaGuardada);
+      try {
+        const tarefaGuardada = await tarefaService.nova(
+          orcamentoState.orcamento._id,
+          tarefa
+        );
+        console.log(tarefaGuardada);
+      } catch (ex) {
+        toast.error(ex.response.data, {
+          position: toast.POSITION.TOP_CENTER
+        });
+      }
     }
   }
 
@@ -141,12 +148,16 @@ const ListaDeTarefas = () => {
               </div>
             </div>
             <div className="col-md-2">
-              <i
+              <button
+                type="button"
                 onClick={submit}
-                style={{ color: "green" }}
-                className="fa fa-arrow-circle-down fa-3x btnClick"
-                aria-hidden="true"
-              ></i>
+                className="fa fa-arrow-circle-down fa-3x"
+                style={{
+                  backgroundColor: "white",
+                  border: "none",
+                  color: "green"
+                }}
+              ></button>
             </div>
           </div>
         )}
