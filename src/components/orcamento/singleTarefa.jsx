@@ -3,13 +3,13 @@ import { toast } from "react-toastify";
 import { useForm } from "../common/customHooks/userForm";
 import { renderInput } from "../common/formInputs";
 import tarefaSchema from "../../schemas/orcamento/tarefaSchema";
-import useListaDeNomesDeTarefas from "./custmoStates/listaDeTarefasState";
+import useSingleTarefa from "./custmoStates/useSingleTarefa";
 import * as tarefaService from "../../services/tarefa";
 
 const SingleTarefa = ({ orcamento, precos }) => {
   delete precos.margem;
 
-  const tiposDeTarefa = useListaDeNomesDeTarefas(precos);
+  const tiposDeTarefa = useSingleTarefa(precos);
 
   const formState = {};
   const { schema } = tarefaSchema;
@@ -72,7 +72,7 @@ const SingleTarefa = ({ orcamento, precos }) => {
 
   return (
     <>
-      {currentFormState && (
+      {currentFormState && tiposDeTarefa && (
         <div onChange={handleTarefaChange} className="row">
           <div className="col">
             <select

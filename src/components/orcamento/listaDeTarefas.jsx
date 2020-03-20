@@ -2,16 +2,17 @@ import React, { useContext } from "react";
 import SingleTarefa from "./singleTarefa";
 import CabecalhoListaDeTarefas from "./cabecalhoListaDeTarefas";
 import { OrcamentoContext } from "../../contexts/orcamentoContext";
-import useListaDeNomesDeTarefas from "./custmoStates/listaDeTarefasState";
+import useListaDeTarefas from "./custmoStates/useListaDeTarefas";
 
 const ListaDeTarefas = () => {
   const { orcamentoState, precos } = useContext(OrcamentoContext);
   delete precos.margem;
+  const { orcamento } = orcamentoState;
 
-  const tiposDeTarefa = useListaDeNomesDeTarefas(precos);
+  const [tarefas, setTarefas] = useListaDeTarefas(orcamento);
 
   function canRenderTarefaRow() {
-    if (tiposDeTarefa.nomes.length > 0 && orcamentoState.orcamento) return true;
+    if (orcamentoState.orcamento) return true;
 
     return false;
   }

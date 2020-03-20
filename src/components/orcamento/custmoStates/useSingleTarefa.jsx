@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function useListaDeNomesDeTarefas(precos) {
+export default function useSingleTarefa(precos) {
   const [tarefas, setNomesDasTarefas] = useState({
     nomes: []
   });
