@@ -8,7 +8,6 @@ import * as tarefaService from "../../services/tarefa";
 
 const SingleTarefa = ({ orcamento, precos, tarefa = {} }) => {
   delete precos.margem;
-  console.log(tarefa);
 
   const tiposDeTarefa = useSingleTarefa(precos);
 
@@ -26,14 +25,14 @@ const SingleTarefa = ({ orcamento, precos, tarefa = {} }) => {
           tarefaId: "",
           tipoDeTarefa: "",
           descricao: "",
-          quantidade: "",
+          quantidade: "0",
           custoUnitario: "0",
           total: "0"
         },
         errors: {}
       };
       const { data, errors } = formState;
-      if (!tarefa) {
+      if (Object.keys(tarefa).length === 0) {
         setFormValues({ data, errors });
       } else {
         setFormValues({
@@ -48,6 +47,8 @@ const SingleTarefa = ({ orcamento, precos, tarefa = {} }) => {
     const { data: tarefa } = currentFormState;
     tarefa.tipoDeTarefa = e.target.value;
     if (e.target.value) tarefa.custoUnitario = precos[e.target.value];
+    if (tarefa.quantidade !== 0)
+      tarefa.total = precos[e.target.value] * tarefa.quantidade;
     else tarefa.custoUnitario = "0";
 
     setFormValues({
@@ -56,9 +57,10 @@ const SingleTarefa = ({ orcamento, precos, tarefa = {} }) => {
     });
   }
 
-  function handleTarefaChange() {
+  function handleQuantidadeChange(e) {
     const { data: tarefa } = currentFormState;
-    tarefa.total = tarefa.quantidade * tarefa.custoUnitario;
+    tarefa.quantidade = e.target.value;
+    tarefa.total = e.target.value * tarefa.custoUnitario;
 
     setFormValues({
       data: tarefa,
@@ -66,9 +68,9 @@ const SingleTarefa = ({ orcamento, precos, tarefa = {} }) => {
     });
   }
 
-  async function submit() {
+  async function submit(e) {
     const tarefa = currentFormState.data;
-    if (canSubmit) {
+    if (canSubmit(e)) {
       try {
         const tarefaGuardada = await tarefaService.nova(orcamento._id, tarefa);
       } catch (ex) {
@@ -82,7 +84,7 @@ const SingleTarefa = ({ orcamento, precos, tarefa = {} }) => {
   return (
     <>
       {currentFormState && tiposDeTarefa && (
-        <div onChange={handleTarefaChange} className="row">
+        <div className="row">
           <div className="col">
             <select
               name="tipoDeTarefa"
@@ -112,33 +114,33 @@ const SingleTarefa = ({ orcamento, precos, tarefa = {} }) => {
           </div>
 
           <div className="col-md-1">
-            {renderInput(
-              currentFormState,
-              "quantidade",
-              handleChange,
-              "",
-              "",
-              "form-control-lg"
-            )}
-          </div>
-          <div className="col-md-1">
             <div className="form-group">
               <input
+                value={currentFormState.data.quantidade}
+                onChange={handleQuantidadeChange}
+                type="number"
+                name="quantidade"
                 className="form-control form-control-lg"
-                type="text"
-                readOnly="readOnly"
-                value={currentFormState.data.custoUnitario}
               />
+              {Object.keys(currentFormState.errors).length > 0 && (
+                <div className="alert alert-danger">
+                  {currentFormState.errors["quantidade"]}
+                </div>
+              )}
             </div>
           </div>
           <div className="col-md-1">
             <div className="form-group">
-              <input
-                className="form-control form-control-lg"
-                type="text"
-                readOnly="readOnly"
-                value={currentFormState.data.total}
-              />
+              <label style={{ fontSize: 30 }}>
+                {currentFormState.data.custoUnitario} €
+              </label>
+            </div>
+          </div>
+          <div className="col-md-1">
+            <div className="form-group">
+              <label style={{ fontSize: 30 }}>
+                {currentFormState.data.total} €
+              </label>
             </div>
           </div>
           <div className="col-md-1">
@@ -157,7 +159,6 @@ const SingleTarefa = ({ orcamento, precos, tarefa = {} }) => {
             {Object.keys(tarefa).length > 0 && (
               <button
                 type="button"
-                onClick={submit}
                 className="fa fa-trash fa-3x"
                 style={{
                   backgroundColor: "white",
