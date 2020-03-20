@@ -6,8 +6,9 @@ import tarefaSchema from "../../schemas/orcamento/tarefaSchema";
 import useSingleTarefa from "./custmoStates/useSingleTarefa";
 import * as tarefaService from "../../services/tarefa";
 
-const SingleTarefa = ({ orcamento, precos }) => {
+const SingleTarefa = ({ orcamento, precos, tarefa = {} }) => {
   delete precos.margem;
+  console.log(tarefa);
 
   const tiposDeTarefa = useSingleTarefa(precos);
 
@@ -22,6 +23,7 @@ const SingleTarefa = ({ orcamento, precos }) => {
     (function() {
       const formState = {
         data: {
+          tarefaId: "",
           tipoDeTarefa: "",
           descricao: "",
           quantidade: "",
@@ -31,7 +33,14 @@ const SingleTarefa = ({ orcamento, precos }) => {
         errors: {}
       };
       const { data, errors } = formState;
-      setFormValues({ data, errors });
+      if (!tarefa) {
+        setFormValues({ data, errors });
+      } else {
+        setFormValues({
+          data: tarefa,
+          errors
+        });
+      }
     })();
   }, [setFormValues]);
 
@@ -80,6 +89,7 @@ const SingleTarefa = ({ orcamento, precos }) => {
               id="tipoDeTarefa"
               className="form-control form-control-lg"
               onChange={onTipoDeTarefaChange}
+              defaultValue={tarefa.tipoDeTarefa}
             >
               <option></option>
               {tiposDeTarefa.nomes.map(n => (

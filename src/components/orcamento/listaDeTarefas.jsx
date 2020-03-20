@@ -12,9 +12,7 @@ const ListaDeTarefas = () => {
   const [tarefas, setTarefas] = useListaDeTarefas(orcamento);
 
   function canRenderTarefaRow() {
-    if (orcamentoState.orcamento) return true;
-
-    return false;
+    return orcamentoState.orcamento && tarefas.length > 0 ? true : false;
   }
 
   return (
@@ -25,8 +23,17 @@ const ListaDeTarefas = () => {
           <CabecalhoListaDeTarefas />
         </div>
         {!canRenderTarefaRow() && <h3>Loding...</h3>}
+        {canRenderTarefaRow() &&
+          tarefas.map(t => (
+            <SingleTarefa
+              key={t._id}
+              orcamento={orcamento}
+              precos={precos}
+              tarefa={t}
+            />
+          ))}
         {canRenderTarefaRow() && (
-          <SingleTarefa orcamento={orcamentoState.orcamento} precos={precos} />
+          <SingleTarefa orcamento={orcamentoState} precos={precos} />
         )}
       </div>
     </div>
