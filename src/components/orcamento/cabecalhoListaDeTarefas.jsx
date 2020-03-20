@@ -6,7 +6,7 @@ const CabecalhoListaDeTarefas = () => {
       <div className="col">
         <label className="form-label">Tarefa</label>
       </div>
-      <div className="col-md-5">
+      <div className="col-md-6">
         <label className="form-label">Descrção</label>
       </div>
       <div className="col-md-1">
@@ -18,7 +18,7 @@ const CabecalhoListaDeTarefas = () => {
       <div className="col-md-1">
         <label className="form-label">Total</label>
       </div>
-      <div className="col-md-2">
+      <div className="col-md-1">
         <label className="form-label">Add/Rem</label>
       </div>
     </>

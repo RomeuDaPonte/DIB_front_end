@@ -100,7 +100,7 @@ const SingleTarefa = ({ orcamento, precos, tarefa = {} }) => {
             </select>
           </div>
 
-          <div className="col-md-5">
+          <div className="col-md-6">
             {renderInput(
               currentFormState,
               "descricao",
@@ -141,17 +141,31 @@ const SingleTarefa = ({ orcamento, precos, tarefa = {} }) => {
               />
             </div>
           </div>
-          <div className="col-md-2">
-            <button
-              type="button"
-              onClick={submit}
-              className="fa fa-arrow-circle-down fa-3x"
-              style={{
-                backgroundColor: "white",
-                border: "none",
-                color: "green"
-              }}
-            ></button>
+          <div className="col-md-1">
+            {Object.keys(tarefa).length === 0 && (
+              <button
+                type="button"
+                onClick={submit}
+                className="fa fa-arrow-circle-down fa-3x"
+                style={{
+                  backgroundColor: "white",
+                  border: "none",
+                  color: "green"
+                }}
+              ></button>
+            )}
+            {Object.keys(tarefa).length > 0 && (
+              <button
+                type="button"
+                onClick={submit}
+                className="fa fa-trash fa-3x"
+                style={{
+                  backgroundColor: "white",
+                  border: "none",
+                  color: "red"
+                }}
+              ></button>
+            )}
           </div>
         </div>
       )}
