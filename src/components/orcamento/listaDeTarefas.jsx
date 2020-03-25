@@ -1,18 +1,18 @@
-import React, { useContext } from "react";
+import React from "react";
 import SingleTarefa from "./singleTarefa";
 import CabecalhoListaDeTarefas from "./cabecalhoListaDeTarefas";
-import { OrcamentoContext } from "../../contexts/orcamentoContext";
-import useListaDeTarefas from "./custmoStates/useListaDeTarefas";
+import { useOrcamentoValue } from "../../contexts/orcamentoContext";
+import { usePrecosValue } from "../../contexts/precosContext";
+import useListaDeTarefas from "../../customHooks/useListaDeTarefas";
 
 const ListaDeTarefas = () => {
-  const { orcamentoState, precos } = useContext(OrcamentoContext);
-  delete precos.margem;
-  const { orcamento } = orcamentoState;
+  const { orcamento } = useOrcamentoValue();
+  const { precos } = usePrecosValue();
 
   const [tarefas, setTarefas] = useListaDeTarefas(orcamento);
 
   function canRenderTarefaRow() {
-    return orcamentoState.orcamento && tarefas.length > 0 ? true : false;
+    return orcamento && tarefas.length > 0 ? true : false;
   }
 
   return (
@@ -33,7 +33,7 @@ const ListaDeTarefas = () => {
             />
           ))}
         {canRenderTarefaRow() && (
-          <SingleTarefa orcamento={orcamentoState} precos={precos} />
+          <SingleTarefa orcamento={orcamento} precos={precos} />
         )}
       </div>
     </div>

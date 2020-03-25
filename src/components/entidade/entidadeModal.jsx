@@ -4,8 +4,8 @@ import * as entidade from "../../services/entidadeService";
 import Joi from "joi-browser";
 import Button from "react-bootstrap/Button";
 import { renderInput } from "../common/formInputs";
-import { useModalToogle } from "../common/customHooks/useModalToogle";
-import { useForm } from "../common/customHooks/userForm";
+import { useModalToogle } from "../../customHooks/useModalToogle";
+import { useForm } from "../../customHooks/userForm";
 
 const EntidadeModal = props => {
   const modalState = {

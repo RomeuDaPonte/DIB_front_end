@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getAllForOrcamento } from "../../../services/tarefa";
+import { getAllForOrcamento } from "../services/tarefa";
 
 export default function useListaDeTarefas(orcamento) {
   const [tarefas, setTarefas] = useState({ tarefas: [] });

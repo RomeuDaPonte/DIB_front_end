@@ -5,7 +5,7 @@ import accountService from "../services/accountService";
 import Definicoes from "./definicoes/definicoes";
 import Entidade from "./entidade/entidade";
 import ListaDeOrcamentos from "./listaDeOrcamentos/listaDeOrcamentos";
-import OrcamentoElaboracao from "./orcamento/orcamentoElaboracao";
+import IndexOrcamento from "./orcamento/index";
 
 const Landing = () => {
   const state = {
@@ -24,7 +24,7 @@ const Landing = () => {
       <Sidbar user={currentState.user} />
       <div className="contentorPrincipal">
         <Switch>
-          <Route path="/orcamento/:id" component={OrcamentoElaboracao} />
+          <Route path="/orcamento/:id" component={IndexOrcamento} />
           <Route path="/definicoes" component={Definicoes} />
           <Route path="/entidade" component={Entidade} />
           <Route path="/listaDeOrcamentos" component={ListaDeOrcamentos} />

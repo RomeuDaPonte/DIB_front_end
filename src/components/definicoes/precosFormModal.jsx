@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Joi from "joi-browser";
-import { useModalToogle } from "../common/customHooks/useModalToogle";
-import { useForm } from "../common/customHooks/userForm";
+import { useModalToogle } from "../../customHooks/useModalToogle";
+import { useForm } from "../../customHooks/userForm";
 import { renderInput } from "../common/formInputs";
 import * as precos from "../../services/precosService";
 

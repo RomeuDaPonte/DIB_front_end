@@ -4,8 +4,8 @@ import Button from "react-bootstrap/Button";
 import Joi from "joi-browser";
 import * as account from "../../services/accountService";
 import { renderInput } from "../common/formInputs";
-import { useModalToogle } from "../common/customHooks/useModalToogle";
-import { useForm } from "../common/customHooks/userForm";
+import { useModalToogle } from "../../customHooks/useModalToogle";
+import { useForm } from "../../customHooks/userForm";
 
 const EditUserModal = props => {
   const modalState = {

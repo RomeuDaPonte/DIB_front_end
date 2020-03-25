@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { toast } from "react-toastify";
-import { useForm } from "../common/customHooks/userForm";
+import { useForm } from "../../customHooks/userForm";
 import { renderInput } from "../common/formInputs";
 import tarefaSchema from "../../schemas/orcamento/tarefaSchema";
-import useSingleTarefa from "./custmoStates/useSingleTarefa";
+import useSingleTarefa from "../../customHooks/useSingleTarefa";
 import * as tarefaService from "../../services/tarefa";
 
 const SingleTarefa = ({ orcamento, precos, tarefa = {} }) => {
@@ -41,7 +41,7 @@ const SingleTarefa = ({ orcamento, precos, tarefa = {} }) => {
         });
       }
     })();
-  }, [setFormValues]);
+  }, [setFormValues, tarefa]);
 
   function onTipoDeTarefaChange(e) {
     const { data: tarefa } = currentFormState;

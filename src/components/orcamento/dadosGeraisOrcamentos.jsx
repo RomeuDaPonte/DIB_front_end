@@ -1,14 +1,16 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Joi from "joi-browser";
-import { useForm } from "../common/customHooks/userForm";
-import { OrcamentoContext } from "../../contexts/orcamentoContext";
+import { useForm } from "../../customHooks/userForm";
 import * as entidade from "../../services/entidadeService";
 import * as user from "../../services/accountService";
 import * as orcamentoService from "../../services/orcamentoDadosGeraisService";
 import { renderInput, renderSelect } from "../common/formInputs";
+import { useOrcamentoValue } from "../../contexts/orcamentoContext";
+import { usePrecosValue } from "../../contexts/precosContext";
 
 const DadosGeraisOrcamento = () => {
-  const { orcamentoState, precos } = useContext(OrcamentoContext);
+  const { orcamento } = useOrcamentoValue();
+  const { precos } = usePrecosValue();
 
   const [condicoesDePagamento, setCondicoesDePagamento] = useState({
     arrayDeCondicoesDePagamento: []
@@ -93,7 +95,6 @@ const DadosGeraisOrcamento = () => {
 
   useEffect(() => {
     (async function() {
-      const { orcamento } = orcamentoState;
       if (orcamento && clientes) {
         const cliente = clientes.find(cli => cli._id === orcamento.cliente._id);
         const data = {
@@ -114,7 +115,7 @@ const DadosGeraisOrcamento = () => {
         setFormValues({ data, errors });
       }
     })();
-  }, [currentUser, setFormValues, clientes, orcamentoState, precos.margem]);
+  }, [currentUser, setFormValues, clientes, orcamento, precos.margem]);
 
   function handleClientChange({ currentTarget: input }) {
     const { data, errors } = currentFormState;
@@ -128,7 +129,6 @@ const DadosGeraisOrcamento = () => {
   }
 
   async function submitForm() {
-    const { orcamento } = orcamentoState;
     try {
       await orcamentoService.editar(orcamento._id, currentFormState.data);
     } catch (ex) {
