@@ -6,7 +6,19 @@ import tarefaSchema from "../../schemas/orcamento/tarefaSchema";
 import useSingleTarefa from "../../customHooks/useSingleTarefa";
 import * as tarefaService from "../../services/tarefa";
 
-const SingleTarefa = ({ orcamento, precos, tarefa = {} }) => {
+const form = {
+  data: {
+    tarefaId: "",
+    tipoDeTarefa: "",
+    descricao: "",
+    quantidade: "0",
+    custoUnitario: "0",
+    total: "0"
+  },
+  errors: {}
+};
+
+const SingleTarefa = ({ orcamento, precos, tarefa = form.data }) => {
   delete precos.margem;
 
   const tiposDeTarefa = useSingleTarefa(precos);
@@ -19,28 +31,10 @@ const SingleTarefa = ({ orcamento, precos, tarefa = {} }) => {
   });
 
   useEffect(() => {
-    (function() {
-      const formState = {
-        data: {
-          tarefaId: "",
-          tipoDeTarefa: "",
-          descricao: "",
-          quantidade: "0",
-          custoUnitario: "0",
-          total: "0"
-        },
-        errors: {}
-      };
-      const { data, errors } = formState;
-      if (Object.keys(tarefa).length === 0) {
-        setFormValues({ data, errors });
-      } else {
-        setFormValues({
-          data: tarefa,
-          errors
-        });
-      }
-    })();
+    setFormValues({
+      data: tarefa,
+      errors: []
+    });
   }, [setFormValues, tarefa]);
 
   function onTipoDeTarefaChange(e) {
@@ -91,7 +85,7 @@ const SingleTarefa = ({ orcamento, precos, tarefa = {} }) => {
               id="tipoDeTarefa"
               className="form-control form-control-lg"
               onChange={onTipoDeTarefaChange}
-              defaultValue={tarefa.tipoDeTarefa}
+              defaultValue={currentFormState.data.tipoDeTarefa}
             >
               <option></option>
               {tiposDeTarefa.nomes.map(n => (

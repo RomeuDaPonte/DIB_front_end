@@ -8,7 +8,6 @@ import useListaDeTarefas from "../../customHooks/useListaDeTarefas";
 const ListaDeTarefas = () => {
   const { orcamento } = useOrcamentoValue();
   const { precos } = usePrecosValue();
-
   const [tarefas, setTarefas] = useListaDeTarefas(orcamento);
 
   function canRenderTarefaRow() {
