@@ -7,6 +7,7 @@ export default function useSingleTarefa(precos) {
   useEffect(() => {
     (function() {
       const nomesDasTarefas = [...Object.keys(precos)];
+      nomesDasTarefas.unshift("");
       setNomesDasTarefas({ nomes: nomesDasTarefas });
     })();
   }, [precos]);

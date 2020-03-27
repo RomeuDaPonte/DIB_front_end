@@ -1,17 +1,32 @@
 import React from "react";
 import SingleTarefa from "./singleTarefa";
 import CabecalhoListaDeTarefas from "./cabecalhoListaDeTarefas";
-import { useOrcamentoValue } from "../../contexts/orcamentoContext";
 import { usePrecosValue } from "../../contexts/precosContext";
 import useListaDeTarefas from "../../customHooks/useListaDeTarefas";
+import { useOrcamentoValue } from "../../contexts/orcamentoContext";
+
+const emptyTarefa = {
+  tarefaId: "",
+  tipoDeTarefa: "",
+  descricao: "",
+  quantidade: "0",
+  custoUnitario: "0",
+  total: "0"
+};
 
 const ListaDeTarefas = () => {
-  const { orcamento } = useOrcamentoValue();
   const { precos } = usePrecosValue();
+  const { orcamento } = useOrcamentoValue();
   const [tarefas, setTarefas] = useListaDeTarefas(orcamento);
 
+  function addTarefa(novaTarefa) {
+    const tarefasGuardadas = [...tarefas];
+    tarefasGuardadas.push(novaTarefa);
+    setTarefas(tarefasGuardadas);
+  }
+
   function canRenderTarefaRow() {
-    return orcamento && tarefas.length > 0 ? true : false;
+    return tarefas.length > 0 ? true : false;
   }
 
   return (
@@ -21,19 +36,15 @@ const ListaDeTarefas = () => {
         <div className="row">
           <CabecalhoListaDeTarefas />
         </div>
-        {!canRenderTarefaRow() && <h3>Loding...</h3>}
         {canRenderTarefaRow() &&
           tarefas.map(t => (
-            <SingleTarefa
-              key={t._id}
-              orcamento={orcamento}
-              precos={precos}
-              tarefa={t}
-            />
+            <SingleTarefa key={t._id} precos={precos} tarefa={t} />
           ))}
-        {canRenderTarefaRow() && (
-          <SingleTarefa orcamento={orcamento} precos={precos} />
-        )}
+        <SingleTarefa
+          addTarefa={addTarefa}
+          precos={precos}
+          tarefa={{ ...emptyTarefa }}
+        />
       </div>
     </div>
   );

@@ -2,26 +2,15 @@ import React, { useEffect } from "react";
 import { toast } from "react-toastify";
 import { useForm } from "../../customHooks/userForm";
 import { renderInput } from "../common/formInputs";
+import { useOrcamentoValue } from "../../contexts/orcamentoContext";
 import tarefaSchema from "../../schemas/orcamento/tarefaSchema";
 import useSingleTarefa from "../../customHooks/useSingleTarefa";
 import * as tarefaService from "../../services/tarefa";
 
-const form = {
-  data: {
-    tarefaId: "",
-    tipoDeTarefa: "",
-    descricao: "",
-    quantidade: "0",
-    custoUnitario: "0",
-    total: "0"
-  },
-  errors: {}
-};
-
-const SingleTarefa = ({ orcamento, precos, tarefa = form.data }) => {
+const SingleTarefa = ({ addTarefa, precos, tarefa }) => {
   delete precos.margem;
-
   const tiposDeTarefa = useSingleTarefa(precos);
+  const { orcamento } = useOrcamentoValue();
 
   const formState = {};
   const { schema } = tarefaSchema;
@@ -31,9 +20,11 @@ const SingleTarefa = ({ orcamento, precos, tarefa = form.data }) => {
   });
 
   useEffect(() => {
+    console.log(tarefa);
     setFormValues({
       data: tarefa,
-      errors: []
+      errors: [],
+      saved: tarefa.total !== "0" ? true : false
     });
   }, [setFormValues, tarefa]);
 
@@ -66,7 +57,11 @@ const SingleTarefa = ({ orcamento, precos, tarefa = form.data }) => {
     const tarefa = currentFormState.data;
     if (canSubmit(e)) {
       try {
-        const tarefaGuardada = await tarefaService.nova(orcamento._id, tarefa);
+        const { data: novaTarefa } = await tarefaService.nova(
+          orcamento._id,
+          tarefa
+        );
+        addTarefa(novaTarefa);
       } catch (ex) {
         toast.error(ex.response.data, {
           position: toast.POSITION.TOP_CENTER
@@ -87,7 +82,6 @@ const SingleTarefa = ({ orcamento, precos, tarefa = form.data }) => {
               onChange={onTipoDeTarefaChange}
               defaultValue={currentFormState.data.tipoDeTarefa}
             >
-              <option></option>
               {tiposDeTarefa.nomes.map(n => (
                 <option key={n} value={n}>
                   {n}
@@ -138,7 +132,7 @@ const SingleTarefa = ({ orcamento, precos, tarefa = form.data }) => {
             </div>
           </div>
           <div className="col-md-1">
-            {Object.keys(tarefa).length === 0 && (
+            {!currentFormState.saved && (
               <button
                 type="button"
                 onClick={submit}
@@ -150,7 +144,7 @@ const SingleTarefa = ({ orcamento, precos, tarefa = form.data }) => {
                 }}
               ></button>
             )}
-            {Object.keys(tarefa).length > 0 && (
+            {currentFormState.saved && (
               <button
                 type="button"
                 className="fa fa-trash fa-3x"

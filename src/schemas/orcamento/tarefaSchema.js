@@ -1,7 +1,8 @@
 import Joi from "joi-browser";
 
 const tarefaSchema = {
-  tarefa: Joi.string()
+  tarefaId: Joi.any(),
+  tipoDeTarefa: Joi.string()
     .required()
     .label("Tipo de tarefa"),
   descricao: Joi.string()
@@ -10,7 +11,7 @@ const tarefaSchema = {
   quantidade: Joi.number()
     .min(0.1)
     .label("Quantidade"),
-  custoUnitario: Joi.string().label("custo unitário"),
+  custoUnitario: Joi.number().label("custo unitário"),
   total: Joi.number()
 };
 
