@@ -1,32 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useRef } from "react";
 import { toast } from "react-toastify";
-import { useForm } from "../../customHooks/userForm";
 import { renderInput } from "../common/formInputs";
 import { useOrcamentoValue } from "../../contexts/orcamentoContext";
-import tarefaSchema from "../../schemas/orcamento/tarefaSchema";
-import useSingleTarefa from "../../customHooks/useSingleTarefa";
+import { useSingleTarefa } from "../../customHooks/useSingleTarefa";
+import useNomesDeTarefas from "../../customHooks/useNomesDeTarefas";
 import * as tarefaService from "../../services/tarefa";
 
 const SingleTarefa = ({ addTarefa, precos, tarefa }) => {
   delete precos.margem;
-  const tiposDeTarefa = useSingleTarefa(precos);
+  const tiposDeTarefa = useNomesDeTarefas(precos);
   const { orcamento } = useOrcamentoValue();
+  const select = useRef();
 
-  const formState = {};
-  const { schema } = tarefaSchema;
-  const [currentFormState, handleChange, canSubmit, setFormValues] = useForm({
-    formState,
-    schema
-  });
+  const selectDefault = () => (select.current.options.selectedIndex = 0);
+  const setFocusOnSelect = () => select.current.focus();
 
-  useEffect(() => {
-    console.log(tarefa);
-    setFormValues({
-      data: tarefa,
-      errors: [],
-      saved: tarefa.total !== "0" ? true : false
-    });
-  }, [setFormValues, tarefa]);
+  const {
+    currentFormState,
+    handleChange,
+    canSubmit,
+    setFormValues
+  } = useSingleTarefa(tarefa);
 
   function onTipoDeTarefaChange(e) {
     const { data: tarefa } = currentFormState;
@@ -62,6 +56,8 @@ const SingleTarefa = ({ addTarefa, precos, tarefa }) => {
           tarefa
         );
         addTarefa(novaTarefa);
+        selectDefault();
+        setFocusOnSelect();
       } catch (ex) {
         toast.error(ex.response.data, {
           position: toast.POSITION.TOP_CENTER
@@ -76,6 +72,7 @@ const SingleTarefa = ({ addTarefa, precos, tarefa }) => {
         <div className="row">
           <div className="col">
             <select
+              ref={select}
               name="tipoDeTarefa"
               id="tipoDeTarefa"
               className="form-control form-control-lg"
