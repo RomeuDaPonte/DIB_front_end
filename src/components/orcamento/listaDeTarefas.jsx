@@ -1,5 +1,5 @@
 import React from "react";
-import SingleTarefa from "./singleTarefa";
+import SingleTarefa from "./singleTarefa.jsx";
 import CabecalhoListaDeTarefas from "./cabecalhoListaDeTarefas";
 import { usePrecosValue } from "../../contexts/precosContext";
 import useListaDeTarefas from "../../customHooks/useListaDeTarefas";
