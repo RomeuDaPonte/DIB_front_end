@@ -19,10 +19,22 @@ const ListaDeTarefas = () => {
   const { orcamento } = useOrcamentoValue();
   const [tarefas, setTarefas] = useListaDeTarefas(orcamento);
 
-  function addTarefa(novaTarefa) {
+  function updateListaDeTarefas(tarefa, add = true) {
     const tarefasGuardadas = [...tarefas];
-    tarefasGuardadas.push(novaTarefa);
-    setTarefas(tarefasGuardadas);
+
+    if (add) addTarefa(tarefasGuardadas, tarefa);
+    else removeTarefa(tarefasGuardadas, tarefa);
+  }
+
+  function addTarefa(listaDeTarefas, novaTarefa) {
+    listaDeTarefas.push(novaTarefa);
+    setTarefas(listaDeTarefas);
+  }
+
+  function removeTarefa(listaDeTarefas, tarefaARemover) {
+    const index = listaDeTarefas.findIndex(t => t._id === tarefaARemover._id);
+    listaDeTarefas.splice(index, 1);
+    setTarefas(listaDeTarefas);
   }
 
   function canRenderTarefaRow() {
@@ -38,10 +50,15 @@ const ListaDeTarefas = () => {
         </div>
         {canRenderTarefaRow() &&
           tarefas.map(t => (
-            <SingleTarefa key={t._id} precos={precos} tarefa={t} />
+            <SingleTarefa
+              key={t._id}
+              precos={precos}
+              tarefa={t}
+              updateListaDeTarefas={updateListaDeTarefas}
+            />
           ))}
         <SingleTarefa
-          addTarefa={addTarefa}
+          updateListaDeTarefas={updateListaDeTarefas}
           precos={precos}
           tarefa={{ ...emptyTarefa }}
         />

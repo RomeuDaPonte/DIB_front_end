@@ -10,3 +10,9 @@ export async function nova(orcamentoId, tarefa) {
 export async function getAllForOrcamento(orcamentoId) {
   return await http.get(apiEndPoint + `/getallfororcamento/${orcamentoId}`);
 }
+
+export async function deleteTarefa(tarefa) {
+  return await http.delete(
+    apiEndPoint + `/${tarefa.orcamentoId}&${tarefa._id}`
+  );
+}

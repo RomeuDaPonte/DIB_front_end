@@ -6,7 +6,7 @@ import { useSingleTarefa } from "../../customHooks/useSingleTarefa";
 import useNomesDeTarefas from "../../customHooks/useNomesDeTarefas";
 import * as tarefaService from "../../services/tarefa";
 
-const SingleTarefa = ({ addTarefa, precos, tarefa }) => {
+const SingleTarefa = ({ updateListaDeTarefas, precos, tarefa }) => {
   delete precos.margem;
   const tiposDeTarefa = useNomesDeTarefas(precos);
   const { orcamento } = useOrcamentoValue();
@@ -47,7 +47,21 @@ const SingleTarefa = ({ addTarefa, precos, tarefa }) => {
     });
   }
 
-  async function submit(e) {
+  async function removeTarefa() {
+    try {
+      const { data: tarefaEliminada } = await tarefaService.deleteTarefa(
+        currentFormState.data
+      );
+
+      updateListaDeTarefas(tarefaEliminada, false);
+    } catch (ex) {
+      toast.error(ex.response.data, {
+        position: toast.POSITION.TOP_CENTER
+      });
+    }
+  }
+
+  async function addTarefa(e) {
     const tarefa = currentFormState.data;
     if (canSubmit(e)) {
       try {
@@ -55,7 +69,7 @@ const SingleTarefa = ({ addTarefa, precos, tarefa }) => {
           orcamento._id,
           tarefa
         );
-        addTarefa(novaTarefa);
+        updateListaDeTarefas(novaTarefa);
         selectDefault();
         setFocusOnSelect();
       } catch (ex) {
@@ -132,7 +146,7 @@ const SingleTarefa = ({ addTarefa, precos, tarefa }) => {
             {!currentFormState.saved && (
               <button
                 type="button"
-                onClick={submit}
+                onClick={addTarefa}
                 className="fa fa-arrow-circle-down fa-3x"
                 style={{
                   backgroundColor: "white",
@@ -145,6 +159,7 @@ const SingleTarefa = ({ addTarefa, precos, tarefa }) => {
               <button
                 type="button"
                 className="fa fa-trash fa-3x"
+                onClick={removeTarefa}
                 style={{
                   backgroundColor: "white",
                   border: "none",
