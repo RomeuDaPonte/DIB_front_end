@@ -6,6 +6,8 @@ const AppForm = ({
   onSubmit,
   validationSchema,
   formClass,
+  validateOnBlur = false,
+  validateOnChange = false,
   children,
 }) => {
   return (
@@ -13,6 +15,8 @@ const AppForm = ({
       initialValues={initialValues}
       onSubmit={onSubmit}
       validationSchema={validationSchema}
+      validateOnBlur={validateOnBlur}
+      validateOnChange={validateOnChange}
     >
       {({ handleSubmit }) => (
         <form onSubmit={handleSubmit} className={formClass}>

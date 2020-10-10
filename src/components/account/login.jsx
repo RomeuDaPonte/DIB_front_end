@@ -34,6 +34,10 @@ export default function Login() {
     },
   });
 
+  function login(loginData) {
+    console.log(loginData);
+  }
+
   return (
     <ThemeProvider theme={darkTheme}>
       <Grid container component="main" className="gridClass">
@@ -53,7 +57,7 @@ export default function Login() {
                 password: "",
               }}
               validationSchema={Validation.loginSchema}
-              onSubmit={(data) => console.log(data)}
+              onSubmit={login}
               formClass="formClass"
             >
               <AppTextInput

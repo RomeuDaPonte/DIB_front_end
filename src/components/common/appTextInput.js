@@ -3,7 +3,13 @@ import TextField from "@material-ui/core/TextField";
 import { useFormikContext } from "formik";
 
 const AppTextInput = ({ name, ...rest }) => {
-  const { errors, values, handleBlur, handleChange } = useFormikContext();
+  const {
+    errors,
+    values,
+    handleBlur,
+    handleChange,
+    touched,
+  } = useFormikContext();
   return (
     <TextField
       onChange={handleChange}
