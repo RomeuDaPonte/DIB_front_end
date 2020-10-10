@@ -1,8 +1,6 @@
 import React from "react";
 import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Paper from "@material-ui/core/Paper";
@@ -11,13 +9,13 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { orange, deepOrange } from "@material-ui/core/colors";
-import * as Yup from "yup";
 
 import account from "../../services/accountService";
 import AppForm from "../../components/common/appForm";
 import Validation from "../../schemas/loginSchema";
 import "../../estilos/login.css";
-import { Formik } from "formik";
+import AppTextInput from "../common/appTextInput";
+import { Button } from "@material-ui/core";
 
 export default function Login() {
   const palletType = "dark";
@@ -49,62 +47,48 @@ export default function Login() {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            <Formik
+            <AppForm
               initialValues={{
                 email: "",
                 password: "",
               }}
               validationSchema={Validation.loginSchema}
               onSubmit={(data) => console.log(data)}
+              formClass="formClass"
             >
-              {({ values, handleChange, handleBlur, handleSubmit, errors }) => (
-                <form className="formClass" onSubmit={handleSubmit}>
-                  <TextField
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.email}
-                    variant="outlined"
-                    margin="normal"
-                    fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                    autoFocus
-                    error={errors.email}
-                    helperText={errors.email}
-                  />
-                  <TextField
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.password}
-                    variant="outlined"
-                    margin="normal"
-                    fullWidth
-                    id="password"
-                    label="Password"
-                    name="password"
-                    autoComplete="password"
-                    autoFocus
-                    type="password"
-                    error={errors.password}
-                    helperText={errors.password}
-                  />
-                  <FormControlLabel
-                    control={<Checkbox value="remember" color="primary" />}
-                    label="Lembrar"
-                  />
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                  >
-                    Submit
-                  </Button>
-                </form>
-              )}
-            </Formik>
+              <AppTextInput
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+              <AppTextInput
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                autoComplete="current-password"
+              />
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Lembrar"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+              >
+                Submit
+              </Button>
+            </AppForm>
           </div>
         </Grid>
       </Grid>
